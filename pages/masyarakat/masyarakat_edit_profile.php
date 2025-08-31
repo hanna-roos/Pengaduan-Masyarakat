@@ -1,0 +1,185 @@
+<?php
+session_start(); 
+
+include "../koneksi/koneksi.php";
+
+if (!isset($_SESSION['username']) && !isset($_SESSION['nik'])) {
+    echo "<script>
+        alert('Anda Belum Login, Silahkan Login terlebih dahulu');
+        window.location.href = '../index.php';
+    </script>";
+    exit;
+}
+?>
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Masyarakat</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../css/style.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.css">
+
+
+</head>
+<?php 
+include "../koneksi/koneksi.php";
+
+$aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
+
+switch ($aksi) {
+    default:
+        // ================= DASHBOARD =================
+        ?>
+
+<body>
+    <!-- dashboard -->
+    <div class="wrapper">
+        <aside id="sidebar">
+            <div class="d-flex">
+                <button id="toggle-btn" type="button" class="toggle-btn">
+                    <i class="bi bi-columns-gap"></i>
+                </button>
+                <div class="sidebar-logo">
+                    <a href="masyarakat.php">Citizen</a>
+                </div>
+            </div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item">
+                    <a href="masyarakat.php" class="sidebar-link">
+                        <i class="bi bi-house"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="masyarakat.php?aksi=tambah-pengaduan" class="sidebar-link">
+                        <i class="bi bi-send"></i>
+                        <span>Submit Pengaduan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="masyarakat.php?aksi=lihat-pengaduan" class="sidebar-link">
+                        <i class="bi bi-eye"></i>
+                        <span>Lihat Tanggapan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="masyarakat.php?aksi=edit-profile" class="sidebar-link">
+                        <i class="bi bi-person-circle"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="logout.php" class="sidebar-link">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+        <div class="main">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">User Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+</body>
+<?php
+        break;
+
+    case 'tambah-pengaduan':
+        ?>
+<!-- tambah data -->
+<div class="container mt-5">
+    <form action="switch_masyarakat.php?aksi=tambah-pengaduan" method="post">
+        <div class="card">
+            <div class="card-header">Tambah Pengaduan</div>
+            <div class="form-group mb-3 px-3">
+                <label>Tanggal Pengaduan</label>
+                <input class="form-control" type="text" name="tgl_pengaduan" value="<?php echo date('Y/m/d'); ?>"
+                    readonly />
+            </div>
+            <div class="form-group mb-3 px-3">
+                <label>NIK</label>
+                <input type="text" class="form-control" name="nik">
+            </div>
+            <div class="form-group mb-3 px-3">
+                <label>Isi Laporan</label>
+                <input type="text" class="form-control" name="isi_laporan">
+            </div>
+            <div class="form-group mb-3 px-3">
+                <label>Foto</label><br>
+                <input type="hidden" name="foto" role="uploadcare-uploader" data-public-key="38882543888abfb41547"
+                    data-images-only />
+            </div>
+            <div class="form-group mb-3 px-3">
+                <label>Status</label>
+                <select class="form-control" name="status">
+                    <option value="0">0</option>
+                </select>
+            </div>
+            <button class="btn btn-lg btn-primary" id="">Kirim Laporan</button>
+        </div>
+    </form>
+</div>
+<!-- tambah data -->
+<?php
+        break;
+
+    case 'edit-pengaduan':
+    include '../koneksi/koneksi.php';
+    $id_pengaduan = $_GET['id_pengaduan'];
+    $query = mysqli_query($config, "SELECT * FROM pengaduan WHERE id_pengaduan = '$id_pengaduan'");
+    $row = mysqli_fetch_array($query);
+?>
+<!-- edit pengaduan -->
+<div class="container mt-5">
+    <form action="switch_masyarakat.php?aksi=edit-pengaduan" method="post">
+        <div class="card">
+            <div class="card-header">Edit Pengaduan</div>
+
+            <!-- hidden id_pengaduan -->
+            <input type="hidden" name="id_pengaduan" value="<?= $row['id_pengaduan'] ?>">
+
+            <div class="form-group mb-3 px-3">
+                <label>Isi Laporan</label>
+                <textarea class="form-control" name="isi_laporan" rows="5"><?= $row['isi_laporan'] ?></textarea>
+            </div>
+
+            <button class="btn btn-lg btn-primary">Simpan Laporan</button>
+        </div>
+    </form>
+</div>
+<!-- edit pengaduan -->
+<?php
+    break;
+
+}
+?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+    </script>
+    <script src="../../js/script.js"></script>
+
+</html>
+
+<?php
