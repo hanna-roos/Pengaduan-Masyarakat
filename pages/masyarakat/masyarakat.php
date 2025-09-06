@@ -174,6 +174,10 @@ switch ($aksi) {
         break;
 
     case 'tambah-pengaduan':
+    include '../koneksi/koneksi.php';
+    $nik = $_SESSION['nik'];
+    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik = '$nik'");
+    $row = mysqli_fetch_array($query);
         ?>
 <!-- tambah data -->
 <div class="container mt-5">
@@ -187,7 +191,7 @@ switch ($aksi) {
             </div>
             <div class="form-group mb-3 px-3">
                 <label>NIK</label>
-                <input type="text" class="form-control" name="nik">
+                <input type="text" class="form-control" name="nik" value="<?= $row['nik']; ?>"/>
             </div>
             <div class="form-group mb-3 px-3">
                 <label>Isi Laporan</label>
@@ -201,7 +205,7 @@ switch ($aksi) {
             <div class="form-group mb-3 px-3">
                 <label>Status</label>
                 <select class="form-control" name="status">
-                    <option value="0">0</option>
+                    <option value="pending">Pending</option>
                 </select>
             </div>
             <button class="btn btn-lg btn-primary" id="">Kirim Laporan</button>
@@ -277,12 +281,64 @@ switch ($aksi) {
         </div>
     </form>
 </div>
+<?php
+break;
+case 'lihat-pengaduan':
+    include '../koneksi/koneksi.php';
 
+    // ambil NIK dari session
+    $nik = $_SESSION['nik'];
 
+    // ambil data pengaduan + tanggapan hanya untuk user login
+    $query = mysqli_query($config, "
+        SELECT pengaduan.id_pengaduan, pengaduan.isi_laporan, pengaduan.foto, pengaduan.status,
+               tanggapan.tanggapan, tanggapan.tgl_tanggapan
+        FROM pengaduan
+        LEFT JOIN tanggapan 
+        ON tanggapan.id_pengaduan = pengaduan.id_pengaduan
+        WHERE pengaduan.nik = '$nik'
+    ");
 
- <?php
+    ?>
+    <div class="container mt-5">
+        <h1 class="fw-bold">Tampil Tanggapan</h1>
+        <a href="masyarakat.php">Kembali</a>
+        <table class="table table-striped table-bordered table-dark">
+            <thead>
+                <tr>
+                    <td>No</td>
+                    <td>ID Pengaduan</td>
+                    <td>Isi Laporan</td>
+                    <td>Foto</td>
+                    <td>Tanggapan</td>
+                    <td>Status</td>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $no = 1;
+                while ($row = mysqli_fetch_array($query)) {
+                    ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= $row['id_pengaduan'] ?></td>
+                        <td><?= $row['isi_laporan'] ?></td>
+                        <td><img src="<?= $row['foto'] ?>" alt="foto" width="100"></td>
+                        <td><?= $row['tanggapan'] ? $row['tanggapan'] : '<span class="text-warning">Belum ditanggapi</span>' ?></td>
+                        <td><?= $row['status'] ?></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+    <?php
+    break;
 
- break;
+    ?>
+
+    <?php
 
 }
 ?>
