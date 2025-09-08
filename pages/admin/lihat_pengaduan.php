@@ -25,6 +25,12 @@ include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 
+// hitung accepted
+$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='accept'"))['total'];
+$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='pending'"))['total'];
+$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
+
+
 switch ($aksi) {
     default:
 ?>
@@ -32,7 +38,7 @@ switch ($aksi) {
 <body>
     <!-- dashboard -->
     <div class="wrapper">
-        <aside id="sidebar">
+<aside id="sidebar">
             <div class="d-flex">
                 <button id="toggle-btn" type="button" class="toggle-btn">
                     <i class="lni lni-dashboard-square-1"></i>
@@ -82,46 +88,39 @@ switch ($aksi) {
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h1 class="text-center">
-                                        Tampilan Data Petugas
+                                        Tampilan Data Pengaduan Masyarakat
                                     </h1>
                                 </div>
                             </div>
                         </div>  
 
                         <!-- Data Pengaduan -->
-                         <div class="row">
-                            
-                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <table class="table table-striped table-bordered table-dark">
                                     <thead>
                                         <tr>
                                             <td>No</td>
+                                            <td>Foto</td>
+                                            <td>Tanggal Laporan</td>
                                             <td>NIK</td>
-                                            <td>Nama</td>
-                                            <td>Username</td>
-                                            <td>Password</td>
-                                            <td>Aksi</td>
+                                            <td>Isi Laporan</td>
+                                            <td>Status</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $query = mysqli_query($config, "SELECT * FROM petugas");
+                                        $query = mysqli_query($config, "SELECT * FROM pengaduan");
                                         $no = 1;
                                         while ($row = mysqli_fetch_array($query)) {
                                         ?>
                                         <tr>
                                             <td><?php echo $no++ ?></td>
-                                            <td><?php echo $row['id_petugas'] ?></td>
-                                            <td><?php echo $row['nama_petugas'] ?></td>
-                                            <td><?php echo $row['username'] ?></td>
-                                            <td><?php echo $row['password'] ?></td>
-                                            <td><?php echo $row['telp'] ?></td>
-                                            <td><?php echo $row['level'] ?></td>
-                                            <td>
-                                            <a href="petugas.php?aksi=edit-masyarakat&id=<?= $row['id_petugas'] ?>" class="btn btn-success btn-sm w-100">Edit</a>
-                                            </td>
+                                            <td><img src="<?php echo $row['foto']; ?>" width="70"></td>
+                                            <td><?php echo $row['tgl_pengaduan'] ?></td>
+                                            <td><?php echo $row['nik'] ?></td>
+                                            <td><?php echo $row['isi_laporan'] ?></td>
+                                            <td><?php echo $row['status'] ?></td>
                                         </tr>
                                         <?php } ?>
                                     </tbody>

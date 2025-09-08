@@ -1,6 +1,8 @@
 <?php
 include '../koneksi/koneksi.php';
 switch ($_GET['aksi']) {
+
+//pengaduan 
 case 'tambah-pengaduan':
    $tgl_pengaduan       = $_POST['tgl_pengaduan'];
    $nik                 = $_POST['nik'];  // ambil dari form
@@ -59,17 +61,18 @@ case 'update-status':
     if ($query) {
         echo "<script>
             alert('Status berhasil diupdate');
-            window.location.href = 'petugas.php';
+            window.location.href = 'admin.php';
         </script>";
     } else {
         echo "<script>
             alert('Gagal update status');
-            window.location.href = 'petugas.php';
+            window.location.href = 'admin.php';
         </script>";
     }
     break;
 
-    case 'update-petugas':
+    //masyarakat
+    case 'update-masyarakat':
     $nik = $_POST['nik'];
     $nama = $_POST['nama'];
     $username = $_POST['username'];
@@ -82,13 +85,13 @@ case 'update-status':
         WHERE nik='$nik'");
 
     if ($query) {
-        echo "<script>alert('Data berhasil diupdate'); window.location.href='lihat_masyarakat.php?aksi=lihat-masyarakat';</script>";
+        echo "<script>alert('Data berhasil diupdate'); window.location.href='lihat_masyarakat.php?';</script>";
     } else {
-        echo "<script>alert('Gagal update data'); window.location.href='lihat_masyarakat.php?aksi=lihat-masyarakat';</script>";
+        echo "<script>alert('Gagal update data'); window.location.href='lihat_masyarakat.php';</script>";
     }
     break;
 
-    case 'tambah-petugas':
+    case 'tambah-masyarakat':
         
 $nik      = $_POST['nik'];
 $nama     = $_POST['nama'];
@@ -104,18 +107,29 @@ $cek = mysqli_num_rows($query);
 
 if($cek > 0){
    echo "<script>
-   alert('NIK $nik sudah ada yang menggunakan, Silahkan Registrasi Kembali');
-   window.location.href = 'regis.php';
+   alert('NIK $nik sudah ada yang menggunakan, Silahkan menggunakan NIK yang berbeda');
+   window.location.href = 'lihat_masyarakat.php';
    </script>";
    // kalo ada data dengan username tersebut maka akan disuru registrasi ulang
 } else {
    mysqli_query($config, "INSERT INTO masyarakat VALUES('$nik', '$nama', '$username', '$password', '$telp')");
    echo "<script>
-   alert('Data berhasil ditambahkan, Silahkan Login Kembali!');
+   alert('Data berhasil ditambahkan');
    window.location.href = 'lihat_masyarakat.php';
    </script>";
    // kalo username nya gak ada di database maka registrasi berhasil
 }
+
+      case 'hapus-masyarakat':
+      $nik = $_GET['nik'];
+      $query = mysqli_query($config, "DELETE FROM pengaduan WHERE nik = '$nik'");
+      $acc = mysqli_query($config, "DELETE FROM masyarakat WHERE nik = '$nik'");
+
+      echo "<script>
+         alert('Pengguna berhasil dihapus');
+         window.location.href = 'lihat_masyarakat.php';
+      </script>";
+      break;
       
    }
    ?>

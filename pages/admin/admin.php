@@ -50,7 +50,7 @@ switch ($aksi) {
 
 <div class="container mt-5">
     <h2>Edit Data Masyarakat</h2>
-    <form method="POST" action="switch_petugas.php?aksi=update-masyarakat">
+    <form method="POST" action="switch_admin.php?aksi=update-masyarakat">
         <input type="hidden" name="nik" value="<?= $data['nik'] ?>">
 
         <div class="mb-3">
@@ -66,7 +66,7 @@ switch ($aksi) {
             <input type="text" name="password" class="form-control" value="<?= $data['password'] ?>" required>
         </div>
         <button type="submit" class="btn btn-primary">Simpan</button>
-        <a href="petugas.php?aksi=lihat-masyarakat" class="btn btn-secondary">Batal</a>
+        <a href="lihat_masyarakat.php" class="btn btn-secondary">Batal</a>
     </form>
 </div>
 
@@ -85,12 +85,12 @@ switch ($aksi) {
                     <i class="lni lni-dashboard-square-1"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="petugas.php">Petugas</a>
+                    <a href="admin.php">Admin</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="petugas.php" class="sidebar-link">
+                    <a href="admin.php" class="sidebar-link">
                         <i class="lni lni-home-2"></i>
                         <span>Dashboard</span>
                     </a>
@@ -102,15 +102,15 @@ switch ($aksi) {
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="lihat_petugas.php?aksi=lihat-petugas" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Petugas</span>
+                    </a>
+                </li>
+               <li class="sidebar-item">
                     <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="sidebar-link">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Masyarakat</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="../regis.php" class="sidebar-link">
-                       <i class="lni lni-plus"></i>
-                        <span>Tambah Masyarakat</span>
                     </a>
                 </li>
             </ul>
@@ -124,7 +124,7 @@ switch ($aksi) {
         <div class="main">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Dashboard Petugas</a>
+                    <a class="navbar-brand" href="#">Dashboard Admin</a>
                 </div>
             </nav>
             <main class="content px-3 py-4">
@@ -134,7 +134,7 @@ switch ($aksi) {
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h1 class="text-center">
-                                        Selamat Datang di Dashboard Petugas!
+                                        Selamat Datang di Dashboard Admin!
                                     </h1>
                                 </div>
                             </div>
@@ -191,9 +191,9 @@ switch ($aksi) {
                                             <td><?php echo $row['isi_laporan'] ?></td>
                                             <td><?php echo $row['status'] ?></td>
                                             <td class="d-flex flex-column gap-2">
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Dicatat" class="btn btn-success btn-sm w-100">Accept</a>
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Menunggu" class="btn btn-warning btn-sm w-100">Pending</a>
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Tidak Terima" class="btn btn-danger btn-sm w-100">Decline</a>
+                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Dicatat" class="btn btn-success btn-sm w-100">Accept</a>
+                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Menunggu" class="btn btn-warning btn-sm w-100">Pending</a>
+                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Tidak Terima" class="btn btn-danger btn-sm w-100">Decline</a>
                                             </td>
                                         </tr>
                                         <?php } ?>
