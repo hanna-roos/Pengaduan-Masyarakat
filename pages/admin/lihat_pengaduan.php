@@ -38,7 +38,7 @@ switch ($aksi) {
 <body>
     <!-- dashboard -->
     <div class="wrapper">
-<aside id="sidebar">
+        <aside id="sidebar">
             <div class="d-flex">
                 <button id="toggle-btn" type="button" class="toggle-btn">
                     <i class="lni lni-dashboard-square-1"></i>
@@ -66,10 +66,16 @@ switch ($aksi) {
                         <span>Petugas</span>
                     </a>
                 </li>
-               <li class="sidebar-item">
+                <li class="sidebar-item">
                     <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="sidebar-link">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Masyarakat</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="lihat_report.php" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Laporan</span>
                     </a>
                 </li>
             </ul>
@@ -92,7 +98,7 @@ switch ($aksi) {
                                     </h1>
                                 </div>
                             </div>
-                        </div>  
+                        </div>
 
                         <!-- Data Pengaduan -->
                         <div class="row">

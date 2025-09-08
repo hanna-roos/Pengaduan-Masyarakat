@@ -113,6 +113,12 @@ switch ($aksi) {
                         <span>Masyarakat</span>
                     </a>
                 </li>
+                    <li class="sidebar-item">
+                    <a href="lihat_report.php" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Laporan</span>
+                    </a>
+                </li>
             </ul>
             <div class="sidebar-footer">
                 <a href="logout.php" class="sidebar-link">
