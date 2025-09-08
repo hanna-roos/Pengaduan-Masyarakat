@@ -3,19 +3,11 @@ session_start();
 
 include "../koneksi/koneksi.php";
 
-if (!isset($_SESSION['username']) && !isset($_SESSION['nik'])) {
-    echo "<script>
-        alert('Anda Belum Login, Silahkan Login terlebih dahulu');
-        window.location.href = '../index.php';
-    </script>";
-    exit;
-}
 ?>
 
 
 <!doctype html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -110,7 +102,7 @@ switch ($aksi) {
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h1>
-                                        Selamat Datang di Dashboard <?php echo $_SESSION['username']; ?>!
+                                        Selamat Datang di Dashboard
                                     </h1>
                                 </div>
                             </div>
