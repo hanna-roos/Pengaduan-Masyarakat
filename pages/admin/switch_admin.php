@@ -130,6 +130,70 @@ if($cek > 0){
          window.location.href = 'lihat_masyarakat.php';
       </script>";
       break;
+
+      //petugas
+    case 'update-petugas':
+    $id_petugas = $_POST['id_petugas'];
+    $nama_petugas = $_POST['nama_petugas'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+     $telp = $_POST['telp'];
+     $level = $_POST['level'];
+
+    $query = mysqli_query($config, "UPDATE petugas SET 
+        nama_petugas='$nama_petugas', 
+        username='$username', 
+        password ='$password',
+        telp='$telp', level='$level' 
+        WHERE id_petugas='$id_petugas'");
+
+    if ($query) {
+        echo "<script>alert('Data berhasil diupdate'); window.location.href='lihat_petugas.php?';</script>";
+    } else {
+        echo "<script>alert('Gagal update data'); window.location.href='lihat_petugas.php';</script>";
+    }
+    break;
+
+    case 'tambah-petugas':
+        
+$id_petugas      = $_POST['id_petugas'];
+$nama_petugas     = $_POST['nama_petugas'];
+$username = $_POST['username'];
+$password = md5($_POST['password']);
+$telp     = $_POST['telp'];
+$level    = $_POST['level'];
+
+// mencari semua data username 
+$query = mysqli_query($config, "SELECT * from petugas WHERE id_petugas = '$id_petugas'");
+// menghitung jumlah baris query
+$cek = mysqli_num_rows($query);
+
+
+if($cek > 0){
+   echo "<script>
+   alert('Username $username sudah ada yang menggunakan, Silahkan menggunakan Username yang berbeda');
+   window.location.href = 'lihat_petugas.php';
+   </script>";
+   // kalo ada data dengan username tersebut maka akan disuru registrasi ulang
+} else {
+   mysqli_query($config, "INSERT INTO petugas VALUES('$id_petugas', '$nama_petugas', '$username', '$password', '$telp', '$level')");
+   echo "<script>
+   alert('Data berhasil ditambahkan');
+   window.location.href = 'lihat_petugas.php';
+   </script>";
+   // kalo username nya gak ada di database maka registrasi berhasil
+}
+
+      case 'hapus-petugas':
+      $id_petugas = $_GET['id_petugas'];
+      $query = mysqli_query($config, "DELETE FROM tanggapan WHERE id_petugas = '$id_petugas'");
+      $acc = mysqli_query($config, "DELETE FROM petugas WHERE id_petugas = '$id_petugas'");
+
+      echo "<script>
+         alert('Petugas berhasil dihapus');
+         window.location.href = 'lihat_petugas.php';
+      </script>";
+      break;
       
    }
    ?>
