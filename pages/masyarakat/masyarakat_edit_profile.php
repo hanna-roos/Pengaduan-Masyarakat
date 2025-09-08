@@ -1,4 +1,4 @@
-<?php
+<!-- <?php
 session_start(); 
 
 include "../koneksi/koneksi.php";
@@ -10,7 +10,9 @@ if (!isset($_SESSION['username']) && !isset($_SESSION['nik'])) {
     </script>";
     exit;
 }
-?>
+?> -->
+
+<!-- Kode Percobaan Blom Kepakek -->
 
 
 <!doctype html>

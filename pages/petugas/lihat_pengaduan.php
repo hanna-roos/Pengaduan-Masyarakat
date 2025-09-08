@@ -1,13 +1,3 @@
-<!-- <?php
-include "../koneksi/koneksi.php";
-if(!isset($_SESSION['username']) == 'username'){
-   echo "<script>
-   alert('Anda Belum Login, Silahkan Login terlebih dahulu');
-   window.location.href = '../index.php';
-   </script>";
-}
-?> -->
-
 <!doctype html>
 <html lang="en">
 
@@ -36,43 +26,12 @@ include "../koneksi/koneksi.php";
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 
 // hitung accepted
-$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Dicatat'"))['total'];
-$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Menunggu'"))['total'];
-$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Tidak Terima'"))['total'];
+$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='accept'"))['total'];
+$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='pending'"))['total'];
+$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
 
 
 switch ($aksi) {
-    case 'edit-masyarakat':
-    $id = $_GET['id'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$id'");
-    $data = mysqli_fetch_array($query);
-?>
-
-<div class="container mt-5">
-    <h2>Edit Data Masyarakat</h2>
-    <form method="POST" action="switch_petugas.php?aksi=update-masyarakat">
-        <input type="hidden" name="nik" value="<?= $data['nik'] ?>">
-
-        <div class="mb-3">
-            <label>Nama</label>
-            <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required>
-        </div>
-        <div class="mb-3">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" value="<?= $data['username'] ?>" required>
-        </div>
-        <div class="mb-3">
-            <label>Password</label>
-            <input type="text" name="password" class="form-control" value="<?= $data['password'] ?>" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Simpan</button>
-        <a href="petugas.php?aksi=lihat-masyarakat" class="btn btn-secondary">Batal</a>
-    </form>
-</div>
-
-<?php
-    break;
-
     default:
 ?>
 
@@ -107,12 +66,6 @@ switch ($aksi) {
                         <span>Masyarakat</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
-                    <a href="../regis.php" class="sidebar-link">
-                       <i class="lni lni-plus"></i>
-                        <span>Tambah Masyarakat</span>
-                    </a>
-                </li>
             </ul>
             <div class="sidebar-footer">
                 <a href="logout.php" class="sidebar-link">
@@ -122,11 +75,6 @@ switch ($aksi) {
             </div>
         </aside>
         <div class="main">
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Dashboard Petugas</a>
-                </div>
-            </nav>
             <main class="content px-3 py-4">
                 <div class="container-fluid">
                     <div class="row">
@@ -134,33 +82,11 @@ switch ($aksi) {
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h1 class="text-center">
-                                        Selamat Datang di Dashboard Petugas!
+                                        Tampilan Data Pengaduan Masyarakat
                                     </h1>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Tabel Count Accepted, Pending, Decline -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <table class="table table-striped table-bordered table-dark text-center">
-                                    <thead>
-                                        <tr>
-                                            <td class="text-success">Accepted</td>
-                                            <td class="text-warning">Pending</td>
-                                            <td class="text-danger">Decline</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><?php echo $accepted; ?></td>
-                                            <td><?php echo $pending; ?></td>
-                                            <td><?php echo $decline; ?></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        </div>  
 
                         <!-- Data Pengaduan -->
                         <div class="row">
@@ -174,7 +100,6 @@ switch ($aksi) {
                                             <td>NIK</td>
                                             <td>Isi Laporan</td>
                                             <td>Status</td>
-                                            <td>Aksi</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -190,11 +115,6 @@ switch ($aksi) {
                                             <td><?php echo $row['nik'] ?></td>
                                             <td><?php echo $row['isi_laporan'] ?></td>
                                             <td><?php echo $row['status'] ?></td>
-                                            <td class="d-flex flex-column gap-2">
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Dicatat" class="btn btn-success btn-sm w-100">Accept</a>
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Menunggu" class="btn btn-warning btn-sm w-100">Pending</a>
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Tidak Terima" class="btn btn-danger btn-sm w-100">Decline</a>
-                                            </td>
                                         </tr>
                                         <?php } ?>
                                     </tbody>
