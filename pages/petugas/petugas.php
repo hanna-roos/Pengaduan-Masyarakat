@@ -191,9 +191,8 @@ switch ($aksi) {
                                             <td><?php echo $row['isi_laporan'] ?></td>
                                             <td><?php echo $row['status'] ?></td>
                                             <td class="d-flex flex-column gap-2">
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Dicatat" class="btn btn-success btn-sm w-100">Accept</a>
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Menunggu" class="btn btn-warning btn-sm w-100">Pending</a>
-                                                <a href="switch_petugas.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Tidak Terima" class="btn btn-danger btn-sm w-100">Decline</a>
+                                                <a href="switch_petugas.php?aksi=status-accept&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn btn-success btn-sm w-100">tanggapi</a>
+                                                <a href="switch_petugas.php?aksi=update-decline&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn btn-danger btn-sm w-100">Decline</a>
                                             </td>
                                         </tr>
                                         <?php } ?>
@@ -201,6 +200,9 @@ switch ($aksi) {
                                 </table>
                             </div>
                         </div>
+
+                        <!-- Tambahkan Tanggapan -->
+                         
 
                     </div>
                 </div>

@@ -235,46 +235,9 @@ switch ($aksi) {
 <!-- edit pengaduan -->
 <?php
     break;
-
-   case 'edit-profile':
-    include '../koneksi/koneksi.php';
-    $nik = $_SESSION['nik'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik = '$nik'");
-    $row = mysqli_fetch_array($query);
 ?>
-<div class="container mt-5">
-    <form action="switch_masyarakat.php?aksi=edit-profile" method="post">
-        <div class="card">
-            <div class="card-header">Your Profile</div>
-            <div class="form-group mb-3 px-3">
-                <label>NIK</label>
-                <input type="text" class="form-control" name="nik_baru" value="<?=$row['nik']?>">
-                <input type="hidden" name="nik_lama" value="<?=$row['nik']?>">
-            </div>
-            <div class="form-group mb-3 px-3">
-                <label>Nama</label>
-                <input type="text" class="form-control" name="nama" value="<?=$row['nama']?>">
-            </div>
-            <div class="form-group mb-3 px-3">
-                <label>Username</label>
-                <input type="text" class="form-control" name="username" value="<?=$row['username']?>">
-            </div>
-            <div class="form-group mb-3 px-3">
-                <label>Password</label>
-                <input type="text" class="form-control" name="password" value="<?=$row['password']?>">
-            </div>
-            <div class="form-group mb-3 px-3">
-                <label>Telp</label>
-                <input type="text" class="form-control" name="telp" value="<?=$row['telp']?>">
-            </div>
 
-            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-            <a href="masyarakat.php" class="btn btn-danger">Kembali</a>
-        </div>
-    </form>
-</div>
 <?php
-break;
 case 'lihat-pengaduan':
     include '../koneksi/koneksi.php';
 

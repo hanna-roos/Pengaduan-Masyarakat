@@ -50,24 +50,71 @@ case 'edit-pengaduan':
       </script>";
       break;
 
-case 'update-status':
+case 'status-accept':
     $id_pengaduan = $_GET['id_pengaduan'];
-    $status = $_GET['status']; // accepted / pending / decline
 
-    $query = mysqli_query($config, "UPDATE pengaduan SET status='$status' WHERE id_pengaduan='$id_pengaduan'");
+    // Ambil data pengaduan
+$pengaduan = mysqli_query($config, "SELECT * FROM pengaduan WHERE id_pengaduan='$id_pengaduan'");
+$row = mysqli_fetch_array($pengaduan);
 
-    if ($query) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tanggapi'])) {
+    $tanggapan = mysqli_real_escape_string($config, $_POST['tanggapan']);
+    $tgl_tanggapan = date('Y-m-d H:i:s');
+
+    // Update status pengaduan
+    $query_pengaduan = "UPDATE pengaduan SET status='accept' WHERE id_pengaduan ='$id_pengaduan'";
+    $result_pengaduan = mysqli_query($config, $query_pengaduan);
+
+    // Masukkan tanggapan ke database
+    $query_tanggapan = "INSERT INTO tanggapan (id_pengaduan, tgl_tanggapan, tanggapan, id_petugas) 
+                        VALUES ('$id_pengaduan', '$tgl_tanggapan', '$tanggapan', '$id_petugas')";
+    $result_tanggapan = mysqli_query($config, $query_tanggapan);
+
+    if ($result_pengaduan && $result_tanggapan) {
         echo "<script>
-            alert('Status berhasil diupdate');
-            window.location.href = 'petugas.php';
-        </script>";
+                alert('Tanggapan berhasil disimpan!');
+                window.location.href = 'petugas.php';
+              </script>";
+        exit();
     } else {
         echo "<script>
-            alert('Gagal update status');
-            window.location.href = 'petugas.php';
-        </script>";
+                alert('Gagal menyimpan tanggapan! Pastikan data valid.');
+                window.location.href = 'petugas.php';
+              </script>";
+        exit();
     }
+}
     break;
+
+    case 'status-decline':
+        if (isset($_GET['id_pengaduan'])) {
+    $id_pengaduan = $_GET['id_pengaduan'];
+
+    // Update the status to "Approved"
+    $query = "UPDATE pengaduan SET status='rejected' WHERE id_pengaduan='$id_pengaduan'";
+    $result = mysqli_query($config, $query);
+
+    if ($result) {
+        echo "<script>
+                alert('Pengaduan telah ditolak!');
+                window.location.href = 'petugas_pengaduan.php';
+              </script>";
+        exit();
+    } else {
+        echo "<script>
+                alert('Gagal memperbarui status!');
+                window.location.href = 'petugas_pengaduan.php';
+              </script>";
+        exit();
+    }
+} else {
+    echo "<script>
+            alert('ID Pengaduan tidak ditemukan!');
+            window.location.href = 'petugas_pengaduan.php';
+          </script>";
+    exit();
+}
+        break;
 
     case 'update-masyarakat':
     $nik = $_POST['nik'];
