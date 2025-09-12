@@ -38,12 +38,12 @@ switch ($aksi) {
                     <i class="lni lni-dashboard-square-1"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="petugas.php">Petugas</a>
+                    <a href="admin.php">Admin</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="petugas.php" class="sidebar-link">
+                    <a href="admin.php" class="sidebar-link">
                         <i class="lni lni-home-2"></i>
                         <span>Dashboard</span>
                     </a>
@@ -55,15 +55,21 @@ switch ($aksi) {
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="lihat_tanggapan.php?aksi=lihat-tanggapan" class="sidebar-link">
-                        <i class="lni lni-shield-2-check"></i>
-                        <span>Lihat Tanggapan</span>
+                    <a href="lihat_petugas.php?aksi=lihat-petugas" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Petugas</span>
                     </a>
                 </li>
-                <li class="sidebar-item">
+               <li class="sidebar-item">
                     <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="sidebar-link">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Masyarakat</span>
+                    </a>
+                </li>
+                    <li class="sidebar-item">
+                    <a href="lihat_report.php" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Laporan</span>
                     </a>
                 </li>
             </ul>
@@ -82,7 +88,7 @@ switch ($aksi) {
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h1 class="text-center">
-                                        Tampilan Data Masyarakat
+                                        Tampilan Data Petugas
                                     </h1>
                                 </div>
                             </div>
@@ -93,7 +99,7 @@ switch ($aksi) {
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#staticBackdrop">
-                                Tambah Masyarakat
+                                Tambah Petugas
                             </button>
 
                             <!-- Modal -->
@@ -104,23 +110,17 @@ switch ($aksi) {
                                     <div class="modal-content">
 
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Masyarakat</h1>
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel">Tambah Petugas</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
 
-                                        <form action="switch_admin.php?aksi=tambah-masyarakat" method="post">
+                                        <form action="switch_admin.php?aksi=tambah-petugas" method="post">
                                             <div class="modal-body">
 
                                                 <div class="mb-3">
-                                                    <label for="nik" class="form-label">NIK</label>
-                                                    <input type="text" class="form-control" name="nik"
-                                                        placeholder="Isi NIK Anda" required>
-                                                </div>
-
-                                                <div class="mb-3">
-                                                    <label for="nama" class="form-label">Nama Lengkap</label>
-                                                    <input type="text" class="form-control" name="nama"
+                                                    <label for="nama_petugas" class="form-label">Nama Lengkap</label>
+                                                    <input type="text" class="form-control" name="nama_petugas"
                                                         placeholder="Isi Nama Lengkap Anda" required>
                                                 </div>
 
@@ -142,12 +142,23 @@ switch ($aksi) {
                                                         placeholder="Isi Telepon Anda" required>
                                                 </div>
 
+
+                                                <div class="form-group">
+                                                    <label for="level">Anda adalah Seorang:</label>
+                                                    <select id="level" name="level" class="form-select" required>
+                                                        <option value="">Pilih</option>
+                                                        <option value="petugas">Petugas</option>
+                                                        <option value="admin">Admin</option>
+                                                    </select>
+                                                </div>
+
                                             </div>
 
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary"
                                                     data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" name="submit" class="btn btn-success">Submit</button>
+                                                <button type="submit" name="submit"
+                                                    class="btn btn-success">Submit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -161,29 +172,33 @@ switch ($aksi) {
                                     <thead>
                                         <tr>
                                             <td>No</td>
-                                            <td>NIK</td>
+                                            <td>ID Petugas</td>
                                             <td>Nama</td>
                                             <td>Username</td>
                                             <td>Password</td>
+                                            <td>Telp</td>
+                                            <td>Level</td>
                                             <td>Aksi</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $query = mysqli_query($config, "SELECT * FROM masyarakat");
+                                        $query = mysqli_query($config, "SELECT * FROM petugas");
                                         $no = 1;
                                         while ($row = mysqli_fetch_array($query)) {
                                         ?>
                                         <tr>
                                             <td><?php echo $no++ ?></td>
-                                            <td><?php echo $row['nik'] ?></td>
-                                            <td><?php echo $row['nama'] ?></td>
+                                            <td><?php echo $row['id_petugas'] ?></td>
+                                            <td><?php echo $row['nama_petugas'] ?></td>
                                             <td><?php echo $row['username'] ?></td>
                                             <td><?php echo $row['password'] ?></td>
+                                            <td><?php echo $row['telp'] ?></td>
+                                            <td><?php echo $row['level'] ?></td>
                                             <td>
-                                                <a href="admin.php?aksi=edit-masyarakat&id=<?= $row['nik'] ?>"
+                                                <a href="admin.php?aksi=edit-petugas&id=<?= $row['id_petugas'] ?>"
                                                     class="btn btn-success btn-sm w-100">Edit</a>
-                                                <a href="switch_admin.php?aksi=hapus-masyarakat&nik=<?php echo $row['nik'] ?>"
+                                                <a href="switch_admin.php?aksi=hapus-petugas&id_petugas=<?php echo $row['id_petugas'] ?>"
                                                     class="btn btn-danger">Hapus</a>
                                             </td>
                                         </tr>
@@ -205,9 +220,9 @@ switch ($aksi) {
 }
 ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
-    </script>
-    <script src="../../js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+</script>
+<script src="../../js/script.js"></script>
 
 </html>

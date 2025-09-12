@@ -627,13 +627,8 @@ switch ($aksi) {
 <!-- edit profile -->
 <?php
     break;
-
-   case 'edit-profile':
-    include '../koneksi/koneksi.php';
-    $nik = $_SESSION['nik'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik = '$nik'");
-    $row = mysqli_fetch_array($query);
 ?>
+<<<<<<< HEAD
 <div class="container mt-5">
         <!-- sidebar -->
         <header class="header" id="header">
@@ -716,8 +711,10 @@ switch ($aksi) {
 </div>
 
 <!-- lihat tanggapan -->
+=======
+
+>>>>>>> d0aceb9be4359b3227a74359a16529a6680d6b4c
 <?php
-break;
 case 'lihat-pengaduan':
     include '../koneksi/koneksi.php';
 

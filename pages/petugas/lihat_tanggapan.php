@@ -25,12 +25,6 @@ include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 
-// hitung accepted
-$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='accept'"))['total'];
-$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='pending'"))['total'];
-$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
-
-
 switch ($aksi) {
     default:
 ?>
@@ -92,61 +86,35 @@ switch ($aksi) {
                                     </h1>
                                 </div>
                             </div>
-                        </div>  
-
-                         <!-- Tabel Count Accepted, Pending, Decline -->
-                        <div class="row mb-4">
-                            <div class="col-12">
-                                <table class="table table-striped table-bordered table-dark text-center">
-                                    <thead>
-                                        <tr>
-                                            <td class="text-success">Accepted</td>
-                                            <td class="text-warning">Pending</td>
-                                            <td class="text-danger">Decline</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><?= $accepted; ?></td>
-                                            <td><?= $pending; ?></td>
-                                            <td><?= $decline; ?></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
-
-                                                <!-- Data Pengaduan -->
+                        <!-- Data Pengaduan -->
                         <div class="row">
                             <div class="col-12">
                                 <table class="table table-striped table-bordered table-dark">
                                     <thead>
                                         <tr>
                                             <td>No</td>
-                                            <td>Tanggal Laporan</td>
-                                            <td>NIK</td>
-                                            <td>Isi Laporan</td>
-                                            <td>Status</td>
-                                            <td>Aksi</td>
+                                            <td>Tanggal Tanggapan</td>
+                                            <td>ID Pengaduan</td>
+                                            <td>Isi Tanggapan</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                            $query = mysqli_query($config, "SELECT * FROM pengaduan");
+                                            $query = mysqli_query($config, "SELECT * FROM tanggapan");
                                             $no = 1;
                                             while ($row = mysqli_fetch_array($query)) {
                                             ?>
                                         <tr>
                                             <td><?= $no++ ?></td>
-                                            <td><?= $row['tgl_pengaduan'] ?></td>
-                                            <td><?= $row['nik'] ?></td>
-                                            <td><?= $row['isi_laporan'] ?></td>
-                                            <td><?= $row['status'] ?></td>
+                                            <td><?= $row['tgl_tanggapan'] ?></td>
+                                            <td><?= $row['id_pengaduan'] ?></td>
+                                            <td><?= $row['tanggapan'] ?></td>
                                             <td class="d-flex flex-column gap-2">
-                                                <a href="petugas.php?aksi=status-accept&id_pengaduan=<?= $row['id_pengaduan'] ?>"
-                                                    class="btn btn-success btn-sm w-100">Tanggapi</a>
-                                                <a href="switch_petugas.php?aksi=status-decline&id_pengaduan=<?= $row['id_pengaduan'] ?>"
-                                                    class="btn btn-danger btn-sm w-100">Decline</a>
+                                                <a href="lihat_tanggapan.php?aksi=tanggapan-edit&id_pengaduan=<?= $row['id_pengaduan'] ?>"
+                                                    class="btn btn-success btn-sm w-100">Edit</a>
+                                                <a href="switch_petugas.php?aksi=tanggapan-hapus&id_pengaduan=<?= $row['id_pengaduan'] ?>"
+                                                    class="btn btn-danger btn-sm w-100">Delete</a>
                                             </td>
                                         </tr>
                                         <?php } ?>
@@ -155,6 +123,36 @@ switch ($aksi) {
                             </div>
                         </div>
 
+                        <?php
+                        break;
+
+                        case 'tanggapan-edit' :
+                            include '../koneksi/koneksi.php';
+                             $id_pengaduan = $_GET['id_pengaduan'];
+                             $query = mysqli_query($config, "SELECT * FROM tanggapan WHERE id_pengaduan = '$id_pengaduan'");
+                             $row = mysqli_fetch_array($query);
+                        ?>
+
+                        <!-- edit pengaduan -->
+                        <div class="container mt-5">
+                            <form action="switch_petugas.php?aksi=tanggapan-edit" method="post">
+                                <div class="card">
+                                    <div class="card-header">Edit Pengaduan</div>
+
+                                    <!-- hidden id_pengaduan -->
+                                    <input type="hidden" name="id_pengaduan" value="<?= $row['id_pengaduan'] ?>">
+
+                                    <div class="form-group mb-3 px-3">
+                                        <label>Isi Laporan</label>
+                                        <textarea class="form-control" name="tanggapan"
+                                            rows="5"><?= $row['tanggapan'] ?></textarea>
+                                    </div>
+
+                                    <button class="btn btn-lg btn-primary">Simpan Tanggapan</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- edit pengaduan -->
                     </div>
                 </div>
             </main>
