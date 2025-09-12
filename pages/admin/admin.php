@@ -107,13 +107,13 @@ switch ($aksi) {
                         <span>Petugas</span>
                     </a>
                 </li>
-               <li class="sidebar-item">
+                <li class="sidebar-item">
                     <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="sidebar-link">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Masyarakat</span>
                     </a>
                 </li>
-                    <li class="sidebar-item">
+                <li class="sidebar-item">
                     <a href="lihat_report.php" class="sidebar-link">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Laporan</span>
@@ -197,9 +197,12 @@ switch ($aksi) {
                                             <td><?php echo $row['isi_laporan'] ?></td>
                                             <td><?php echo $row['status'] ?></td>
                                             <td class="d-flex flex-column gap-2">
-                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Dicatat" class="btn btn-success btn-sm w-100">Accept</a>
-                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Menunggu" class="btn btn-warning btn-sm w-100">Pending</a>
-                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Tidak Terima" class="btn btn-danger btn-sm w-100">Decline</a>
+                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Dicatat"
+                                                    class="btn btn-success btn-sm w-100">Accept</a>
+                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Menunggu"
+                                                    class="btn btn-warning btn-sm w-100">Pending</a>
+                                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Tidak Terima"
+                                                    class="btn btn-danger btn-sm w-100">Decline</a>
                                             </td>
                                         </tr>
                                         <?php } ?>

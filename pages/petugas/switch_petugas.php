@@ -1,6 +1,8 @@
 <?php
 include '../koneksi/koneksi.php';
 switch ($_GET['aksi']) {
+
+    //lihat pengaduan
 case 'tambah-pengaduan':
    $tgl_pengaduan       = $_POST['tgl_pengaduan'];
    $nik                 = $_POST['nik'];  // ambil dari form
@@ -41,50 +43,83 @@ case 'edit-pengaduan':
 
 
 
-      case 'hapus':
+case 'hapus':
       $id_pengaduan = $_GET['id_pengaduan'];
       $query = mysqli_query($config, "DELETE FROM pengaduan WHERE id_pengaduan = '$id_pengaduan'");
       echo "<script>
          alert('Pengaduan berhasil dihapus');
-         window.location.href = 'masyarakat.php';
+         window.location.href = 'lihat_pengaduan.php';
+      </script>";
+      break;
+    
+      //Lihat Tanggapan
+
+case 'tanggapan-edit':
+    $id_pengaduan = $_POST['id_pengaduan'];
+    $tanggapan  = $_POST['tanggapan'];
+
+    $query = mysqli_query($config, "UPDATE tanggapan 
+                                    SET tanggapan = '$tanggapan' 
+                                    WHERE id_pengaduan = '$id_pengaduan'");
+
+    if ($query) {
+        echo "<script>
+        alert('Isi Tanggapan berhasil diedit');
+        window.location.href = 'lihat_tanggapan.php';
+        </script>";
+    } else {
+        echo "<script>
+        alert('Gagal mengedit isi Tanggapan');
+        window.location.href = 'lihat_tanggapan.php';
+        </script>";
+    }
+    break;
+
+    case 'tanggapan-hapus':
+      $id_pengaduan = $_GET['id_pengaduan'];
+      $query = mysqli_query($config, "DELETE FROM tanggapan WHERE id_pengaduan = '$id_pengaduan'");
+      echo "<script>
+         alert('Tanggapan berhasil dihapus');
+         window.location.href = 'lihat_tanggapan.php';
       </script>";
       break;
 
+//pengaduan edit status
+
 case 'status-accept':
-    $id_pengaduan = $_GET['id_pengaduan'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tanggapi'])) {
+        $id_pengaduan = $_POST['id_pengaduan'];
+        $tanggapan = mysqli_real_escape_string($config, $_POST['tanggapan']);
+        $tgl_tanggapan = date('Y-m-d H:i:s');
 
-    // Ambil data pengaduan
-$pengaduan = mysqli_query($config, "SELECT * FROM pengaduan WHERE id_pengaduan='$id_pengaduan'");
-$row = mysqli_fetch_array($pengaduan);
+        // Ambil id_petugas dari session
+        $id_petugas = $_SESSION['id_petugas'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tanggapi'])) {
-    $tanggapan = mysqli_real_escape_string($config, $_POST['tanggapan']);
-    $tgl_tanggapan = date('Y-m-d H:i:s');
+        // Update status pengaduan
+        $query_pengaduan = "UPDATE pengaduan SET status='accept' WHERE id_pengaduan='$id_pengaduan'";
+        $result_pengaduan = mysqli_query($config, $query_pengaduan);
 
-    // Update status pengaduan
-    $query_pengaduan = "UPDATE pengaduan SET status='accept' WHERE id_pengaduan ='$id_pengaduan'";
-    $result_pengaduan = mysqli_query($config, $query_pengaduan);
+        // Masukkan tanggapan ke database
+        $query_tanggapan = "INSERT INTO tanggapan (id_pengaduan, tgl_tanggapan, tanggapan, id_petugas) 
+                            VALUES ('$id_pengaduan', '$tgl_tanggapan', '$tanggapan', '$id_petugas')";
+        $result_tanggapan = mysqli_query($config, $query_tanggapan);
 
-    // Masukkan tanggapan ke database
-    $query_tanggapan = "INSERT INTO tanggapan (id_pengaduan, tgl_tanggapan, tanggapan, id_petugas) 
-                        VALUES ('$id_pengaduan', '$tgl_tanggapan', '$tanggapan', '$id_petugas')";
-    $result_tanggapan = mysqli_query($config, $query_tanggapan);
-
-    if ($result_pengaduan && $result_tanggapan) {
-        echo "<script>
-                alert('Tanggapan berhasil disimpan!');
-                window.location.href = 'petugas.php';
-              </script>";
-        exit();
-    } else {
-        echo "<script>
-                alert('Gagal menyimpan tanggapan! Pastikan data valid.');
-                window.location.href = 'petugas.php';
-              </script>";
-        exit();
+        if ($result_pengaduan && $result_tanggapan) {
+            echo "<script>
+                    alert('Tanggapan berhasil disimpan!');
+                    window.location.href = 'petugas.php';
+                  </script>";
+            exit();
+        } else {
+            echo "<script>
+                    alert('Gagal menyimpan tanggapan! Pastikan data valid.');
+                    window.location.href = 'petugas.php';
+                  </script>";
+            exit();
+        }
     }
-}
     break;
+
 
     case 'status-decline':
         if (isset($_GET['id_pengaduan'])) {
