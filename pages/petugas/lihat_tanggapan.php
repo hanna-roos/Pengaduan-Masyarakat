@@ -1,3 +1,16 @@
+<?php
+include "../koneksi/koneksi.php";
+session_start();
+if (!isset($_SESSION['username']) == 'username'){
+   // true
+   echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+}
+?>
+
+
 <!doctype html>
 <html lang="en">
 
@@ -20,7 +33,6 @@
 </head>
 
 <?php 
-session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
@@ -82,7 +94,7 @@ switch ($aksi) {
                             <div class="card shadow">
                                 <div class="card-body">
                                     <h1 class="text-center">
-                                        Tampilan Data Pengaduan Masyarakat
+                                        Tampilan Data Tanggapan Petugas
                                     </h1>
                                 </div>
                             </div>
@@ -96,12 +108,19 @@ switch ($aksi) {
                                             <td>No</td>
                                             <td>Tanggal Tanggapan</td>
                                             <td>ID Pengaduan</td>
+                                            <td>isi laporan</td>
                                             <td>Isi Tanggapan</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                            $query = mysqli_query($config, "SELECT * FROM tanggapan");
+                                        include '../koneksi/koneksi.php';
+                                            $id_petugas = $_SESSION['id_petugas'];
+                                            $query = mysqli_query($config, "SELECT * FROM tanggapan JOIN pengaduan ON tanggapan.id_pengaduan = pengaduan.id_pengaduan WHERE tanggapan.id_petugas = '$id_petugas'");
+
+                                                // ambil NIK dari session
+
+
                                             $no = 1;
                                             while ($row = mysqli_fetch_array($query)) {
                                             ?>
@@ -109,6 +128,7 @@ switch ($aksi) {
                                             <td><?= $no++ ?></td>
                                             <td><?= $row['tgl_tanggapan'] ?></td>
                                             <td><?= $row['id_pengaduan'] ?></td>
+                                            <td><?= $row['isi_laporan'] ?></td>
                                             <td><?= $row['tanggapan'] ?></td>
                                             <td class="d-flex flex-column gap-2">
                                                 <a href="lihat_tanggapan.php?aksi=tanggapan-edit&id_pengaduan=<?= $row['id_pengaduan'] ?>"

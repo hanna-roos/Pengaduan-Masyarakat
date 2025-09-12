@@ -32,7 +32,7 @@ switch ($aksi) {
 <body>
     <!-- dashboard -->
     <div class="wrapper">
-        <aside id="sidebar">
+                <aside id="sidebar">
             <div class="d-flex">
                 <button id="toggle-btn" type="button" class="toggle-btn">
                     <i class="lni lni-dashboard-square-1"></i>
@@ -52,6 +52,12 @@ switch ($aksi) {
                     <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="sidebar-link">
                         <i class="lni lni-shield-2-check"></i>
                         <span>Lihat Pengaduan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="lihat_tanggapan.php?aksi=lihat-tanggapan" class="sidebar-link">
+                        <i class="lni lni-shield-2-check"></i>
+                        <span>Lihat Tanggapan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

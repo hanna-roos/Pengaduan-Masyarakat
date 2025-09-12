@@ -1,3 +1,15 @@
+<?php
+include "../koneksi/koneksi.php";
+session_start();
+if (!isset($_SESSION['username'])){
+   // true
+   echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+}
+?>
+
 <!doctype html>
 <html lang="en">
 

@@ -1,6 +1,14 @@
 <?php 
 session_start();
 include "../koneksi/koneksi.php";
+if (!isset($_SESSION['username']) == 'username'){
+   // true
+   echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+};
+
 // hitung accepted, pending, decline
 $pengaduan = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan "))['total'];
 $tanggapan  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM tanggapan "))['total'];
@@ -25,7 +33,6 @@ $tanggapan  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total
     $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
     switch ($aksi) {
     
-
     // ================= DEFAULT (DASHBOARD) =================
     default:
 
@@ -69,7 +76,7 @@ $tanggapan  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total
                 </li>
             </ul>
             <div class="sidebar-footer">
-                <a href="logout.php" class="sidebar-link">
+                <a href="../logout.php" class="sidebar-link">
                     <i class="lni lni-exit"></i>
                     <span>Logout</span>
                 </a>

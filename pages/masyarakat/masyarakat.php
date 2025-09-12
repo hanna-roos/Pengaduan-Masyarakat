@@ -1,7 +1,7 @@
 <?php
 include "../koneksi/koneksi.php";
 session_start();
-if (!isset($_SESSION['username']) == 'username'){
+if (!isset($_SESSION['username'])){
    // true
    echo "<script>
    alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
@@ -628,9 +628,7 @@ switch ($aksi) {
 <?php
     break;
 ?>
-<<<<<<< HEAD
 
-=======
 <div class="container mt-5">
         <!-- sidebar -->
         <header class="header" id="header">
@@ -713,7 +711,6 @@ switch ($aksi) {
 </div>
 
 <!-- lihat tanggapan -->
->>>>>>> 7ca424a09afe4511ff92337421de1c56d24a1c08
 <?php
 case 'lihat-pengaduan':
     include '../koneksi/koneksi.php';
