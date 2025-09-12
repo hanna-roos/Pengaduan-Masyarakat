@@ -1,6 +1,13 @@
 <?php 
 session_start();
 include "../koneksi/koneksi.php";
+if (!isset($_SESSION['username'])){
+   // true
+   echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+}
 
 // hitung accepted, pending, decline
 $pengaduan = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan "))['total'];

@@ -12,6 +12,8 @@ if(isset($_POST['level'])){
         $select = "SELECT * FROM masyarakat WHERE username = '$username' AND password = '$password'";
     } else if ($level == "petugas") {
         $select = "SELECT * FROM petugas WHERE username = '$username' AND password = '$password'";
+    } else {
+        $select = "SELECT * FROM petugas WHERE username = '$username' AND password = '$password'";
     }
 
     $result = mysqli_query($config, $select);
@@ -36,7 +38,16 @@ if(isset($_POST['level'])){
                 alert('Anda berhasil login sebagai petugas');
                 window.location.href = '../pages/petugas/petugas.php';
             </script>";
+        } else {
+            $_SESSION['username']   = $data['username'];
+            $_SESSION['id_petugas'] = $data['id_petugas'];
+            $_SESSION['level']      = 'admin';
+            echo "<script>
+                alert('Anda berhasil login sebagai admin');
+                window.location.href = '../pages/admin/admin.php';
+            </script>";
         }
+
 
     } else {
         echo "<script>
