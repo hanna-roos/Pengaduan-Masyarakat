@@ -1,6 +1,6 @@
-<?php
-include "../koneksi/koneksi.php";
+<?php 
 session_start();
+include "../koneksi/koneksi.php";
 if (!isset($_SESSION['username'])){
    // true
    echo "<script>
@@ -8,6 +8,7 @@ if (!isset($_SESSION['username'])){
    window.location.href = '../index.php';
    </script>";
 }
+
 ?>
 
 <!doctype html>
@@ -16,7 +17,7 @@ if (!isset($_SESSION['username'])){
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Petugas</title>
+    <title>Admin</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -32,7 +33,6 @@ if (!isset($_SESSION['username'])){
 </head>
 
 <?php 
-session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
@@ -50,18 +50,18 @@ switch ($aksi) {
 <body>
     <!-- dashboard -->
     <div class="wrapper">
-        <aside id="sidebar">
+               <aside id="sidebar">
             <div class="d-flex">
                 <button id="toggle-btn" type="button" class="toggle-btn">
                     <i class="lni lni-dashboard-square-1"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="petugas.php">Petugas</a>
+                    <a href="admin.php">Admin</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="petugas.php" class="sidebar-link">
+                    <a href="admin.php" class="sidebar-link">
                         <i class="lni lni-home-2"></i>
                         <span>Dashboard</span>
                     </a>
@@ -79,9 +79,21 @@ switch ($aksi) {
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="lihat_petugas.php?aksi=lihat-petugas" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Petugas</span>
+                    </a>
+                </li>
+               <li class="sidebar-item">
                     <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="sidebar-link">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Masyarakat</span>
+                    </a>
+                </li>
+                    <li class="sidebar-item">
+                    <a href="lihat_report.php" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Laporan</span>
                     </a>
                 </li>
             </ul>

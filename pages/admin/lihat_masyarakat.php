@@ -1,6 +1,6 @@
-<?php
-include "../koneksi/koneksi.php";
+<?php 
 session_start();
+include "../koneksi/koneksi.php";
 if (!isset($_SESSION['username'])){
    // true
    echo "<script>
@@ -8,6 +8,7 @@ if (!isset($_SESSION['username'])){
    window.location.href = '../index.php';
    </script>";
 }
+
 ?>
 
 <!doctype html>
@@ -44,18 +45,18 @@ switch ($aksi) {
 <body>
     <!-- dashboard -->
     <div class="wrapper">
-        <aside id="sidebar">
+                <aside id="sidebar">
             <div class="d-flex">
                 <button id="toggle-btn" type="button" class="toggle-btn">
                     <i class="lni lni-dashboard-square-1"></i>
                 </button>
                 <div class="sidebar-logo">
-                    <a href="petugas.php">Petugas</a>
+                    <a href="admin.php">Admin</a>
                 </div>
             </div>
             <ul class="sidebar-nav">
                 <li class="sidebar-item">
-                    <a href="petugas.php" class="sidebar-link">
+                    <a href="admin.php" class="sidebar-link">
                         <i class="lni lni-home-2"></i>
                         <span>Dashboard</span>
                     </a>
@@ -73,9 +74,21 @@ switch ($aksi) {
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="lihat_petugas.php?aksi=lihat-petugas" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Petugas</span>
+                    </a>
+                </li>
+               <li class="sidebar-item">
                     <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="sidebar-link">
                         <i class="lni lni-user-multiple-4"></i>
                         <span>Masyarakat</span>
+                    </a>
+                </li>
+                    <li class="sidebar-item">
+                    <a href="lihat_report.php" class="sidebar-link">
+                        <i class="lni lni-user-multiple-4"></i>
+                        <span>Laporan</span>
                     </a>
                 </li>
             </ul>

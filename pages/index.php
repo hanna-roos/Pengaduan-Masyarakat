@@ -34,6 +34,7 @@
                                 <option value="">Pilih</option>
                                 <option value="masyarakat">Masyarakat</option>
                                 <option value="petugas">Petugas</option>
+                                <option value="admin">Admin</option>
                             </select>
                         </div>
 
