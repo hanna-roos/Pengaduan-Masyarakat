@@ -24,8 +24,13 @@ $tanggapan  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total
     <title>Petugas</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/petugas.css">
-    <link rel="stylesheet" href="https://cdn.lineicons.com/5.0/lineicons.css" />
+    <link rel="stylesheet" href="../../css/admin.css">
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <script>
+    UPLOADCARE_PUBLIC_KEY = '38882543888abfb41547';
+    </script>
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.css">
 </head>
 
     <?php
@@ -39,61 +44,61 @@ $tanggapan  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total
     ?>
 
 <body>
-    <div class="wrapper">
-                        <aside id="sidebar">
-            <div class="d-flex">
-                <button id="toggle-btn" type="button" class="toggle-btn">
-                    <i class="lni lni-dashboard-square-1"></i>
-                </button>
-                <div class="sidebar-logo">
-                    <a href="admin.php">Admin</a>
+    <!-- dashboard -->
+    <div class="wrapper" id="body-pd">
+        <header class="header" id="header">
+            <div class="header__toggle">
+                <i class='bx bx-menu' id="header-toggle"></i>
+            </div>
+
+            <div class="header__img">
+                <img src="../../img/adminpetugas.png" alt="">
+            </div>
+        </header>
+
+        <div class="l-navbar" id="nav-bar">
+            <nav class="nav">
+                <div>
+                    <a href="admin.php" class="nav__logo">
+                        <i class='bx bx-layer nav__logo-icon'></i>
+                        <span class="nav__logo-name">Citizen</span>
+                    </a>
+
+                    <div class="nav__list">
+                        <a href="admin.php" class="nav__link active">
+                        <i class='bx bx-grid-alt nav__icon' ></i>
+                            <span class="nav__name">Dashboard</span>
+                        </a>
+                        
+                        <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav__link">
+                            <i class='bx bx-message-square-detail nav__icon' ></i>
+                            <span class="nav__name">Lihat Pengaduan</span>
+                        </a>
+
+                        <a href="lihat_petugas.php?aksi=lihat-petugas" class="nav__link">
+                            <i class='bx bx-user nav__icon' ></i>
+                            <span class="nav__name">Lihat Petugas</span>
+                        </a>
+
+                        <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav__link">
+                            <i class='bx bx-user nav__icon' ></i>
+                            <span class="nav__name">Lihat Masyarakat</span>
+                        </a>
+			            <a href="lihat_report.php" class="nav__link">
+                            <i class='bx bx-file nav__icon' ></i>
+                            <span class="nav__name">Laporan</span>
+                        </a>
+
+                    </div>
                 </div>
-            </div>
-            <ul class="sidebar-nav">
-                <li class="sidebar-item">
-                    <a href="admin.php" class="sidebar-link">
-                        <i class="lni lni-home-2"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="sidebar-link">
-                        <i class="lni lni-shield-2-check"></i>
-                        <span>Lihat Pengaduan</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="lihat_tanggapan.php?aksi=lihat-tanggapan" class="sidebar-link">
-                        <i class="lni lni-shield-2-check"></i>
-                        <span>Lihat Tanggapan</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="lihat_petugas.php?aksi=lihat-petugas" class="sidebar-link">
-                        <i class="lni lni-user-multiple-4"></i>
-                        <span>Petugas</span>
-                    </a>
-                </li>
-               <li class="sidebar-item">
-                    <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="sidebar-link">
-                        <i class="lni lni-user-multiple-4"></i>
-                        <span>Masyarakat</span>
-                    </a>
-                </li>
-                    <li class="sidebar-item">
-                    <a href="lihat_report.php" class="sidebar-link">
-                        <i class="lni lni-user-multiple-4"></i>
-                        <span>Laporan</span>
-                    </a>
-                </li>
-            </ul>
-            <div class="sidebar-footer">
-                <a href="logout.php" class="sidebar-link">
-                    <i class="lni lni-exit"></i>
-                    <span>Logout</span>
+
+                <a href="../logout.php" class="nav__link">
+                    <i class='bx bx-log-out nav__icon' ></i>
+                    <span class="nav__name">Log Out</span>
                 </a>
-            </div>
-        </aside>
+            </nav>
+        </div>
+ 
         <div class="main">
             <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
@@ -203,67 +208,13 @@ $tanggapan  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total
             </main>
         </div>
     </div>
-    <?php
-        break;
-         // ================= EDIT MASYARAKAT =================
-    case 'edit-masyarakat':
-        $id = $_GET['id'];
-        $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$id'");
-        $data = mysqli_fetch_array($query);
-        ?>
-    <div class="container mt-5">
-        <h2>Edit Data Masyarakat</h2>
-        <form method="POST" action="switch_petugas.php?aksi=update-masyarakat">
-            <input type="hidden" name="nik" value="<?= $data['nik'] ?>">
-            <div class="mb-3">
-                <label>Nama</label>
-                <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required>
-            </div>
-            <div class="mb-3">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?= $data['username'] ?>" required>
-            </div>
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="text" name="password" class="form-control" value="<?= $data['password'] ?>" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-            <a href="petugas.php?aksi=lihat-masyarakat" class="btn btn-secondary">Batal</a>
-        </form>
-    </div>
-    <?php
-    break;
     
-    case 'status-accept':
-        $id_pengaduan = $_GET['id_pengaduan'];
-        $pengaduan = mysqli_query($config, "SELECT * FROM pengaduan WHERE id_pengaduan='$id_pengaduan'");
-        $row = mysqli_fetch_array($pengaduan);
-                // ================= STATUS ACCEPT (TAMBAH TANGGAPAN) =================
-        ?>
-
-
-    <div class="container-fluid">
-        <div class="container mt-5 p-2 d-flex justify-content-center">
-            <div class="card" style="width: 22rem;">
-                <div class="card-body">
-                    <h3 class="d-flex justify-content-center mb-3 mt-3">Tambah Tanggapan</h3>
-                    <form action="switch_petugas.php?aksi=status-accept" method="POST">
-                        <input type="hidden" name="id_pengaduan" value="<?= $row['id_pengaduan']; ?>">
-                        <div class="mb-3">
-                            <label for="tanggapan" class="form-label">Tanggapan</label>
-                            <textarea class="form-control" name="tanggapan" id="tanggapan" rows="3" required></textarea>
-                        </div>
-                        <button type="submit" name="tanggapi" class="btn btn-primary">Kirim</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <?php
     break;
 }
 ?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/admin.js"></script>
 </body>
-
 </html>

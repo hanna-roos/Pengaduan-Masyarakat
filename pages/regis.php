@@ -15,8 +15,8 @@
         <div class="container mt-5 p-5 d-flex justify-content-center">
             <div class="card" style="width: 22rem;">
                 <div class="card-body">
-                    <h3 class="text-center mb-3 mt-3">Registrasi Sekarang</h3
-                    <form class="row g-3" action="cek_regis.php" method="post">
+                    <h3 class="text-center mb-3 mt-3">Registrasi Sekarang</h3>
+                    <form action="cek_regis.php" class="row g-3"  method="post">
 
                         <div class="form-group">
                             <label for="username">NIK:</label>
@@ -47,7 +47,6 @@
                             <input type="submit" name="submit" value="Regis now" class="btn btn-success w-100">
                            <p class="text-center mt-3">Already Have An Account? <a href="index.php">Sign in here</a></p> 
                         </div>
-
                     </form>
                 </div>
             </div>
