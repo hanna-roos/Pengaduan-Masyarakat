@@ -50,9 +50,8 @@ case 'edit-pengaduan':
       </script>";
       break;
 
-     case 'edit-profile':
+    case 'edit-profile':
     $nik_lama = $_POST['nik_lama']; // NIK asli dari database (hidden input)
-    $nik_baru = $_POST['nik_baru']; // kalau user mau ganti NIK
     $nama     = $_POST['nama'];
     $username = $_POST['username'];
     $telp     = $_POST['telp'];
@@ -62,28 +61,22 @@ case 'edit-pengaduan':
     if(mysqli_num_rows($query) > 0){
         echo "<script>
         alert('NIK $nik_baru sudah dipakai orang lain');
-        window.location.href = '../masyarakat.php?aksi=edit-profile';
+        window.location.href = '../masyarakat/masyarakat.php?aksi=edit-profile';
         </script>";
     } else {
         // Update data
         mysqli_query($config, "UPDATE masyarakat SET 
-            nik = '$nik_baru',
             nama = '$nama',
             username = '$username',
             telp = '$telp'
             WHERE nik = '$nik_lama'");
 
-        // Update session juga kalau NIK berubah
-        $_SESSION['nik'] = $nik_baru;
-
         echo "<script>
         alert('Data berhasil di edit');
-        window.location.href = '../masyarakat.php?aksi=edit-profile';
+        window.location.href = '../masyarakat/masyarakat.php?aksi=edit-profile';
         </script>";
     }
 break;
-
-
       
    }
    ?>
