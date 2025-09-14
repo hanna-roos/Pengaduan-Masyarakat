@@ -79,7 +79,7 @@ switch ($aksi) {
                     </div>
                 </div>
 
-                <a href="logout.php" class="nav__link">
+                <a href="../logout.php" class="nav__link">
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>
@@ -398,7 +398,7 @@ switch ($aksi) {
                     </div>
                 </div>
 
-                <a href="logout.php" class="nav__link">
+                <a href="../logout.php" class="nav__link">
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>
@@ -574,7 +574,7 @@ switch ($aksi) {
                     </a>
                 </div>
             </div>
-            <a href="logout.php" class="nav__link">
+            <a href="../logout.php" class="nav__link">
                 <i class='bx bx-log-out nav__icon' ></i>
                 <span class="nav__name">Log Out</span>
             </a>
@@ -656,7 +656,7 @@ switch ($aksi) {
                     </div>
                 </div>
 
-                <a href="logout.php" class="nav__link">
+                <a href="../logout.php" class="nav__link">
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>
@@ -826,7 +826,7 @@ switch ($aksi) {
                     </div>
                 </div>
 
-                <a href="logout.php" class="nav__link">
+                <a href="../logout.php" class="nav__link">
                     <i class='bx bx-log-out nav__icon' ></i>
                     <span class="nav__name">Log Out</span>
                 </a>

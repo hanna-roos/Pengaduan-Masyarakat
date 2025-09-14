@@ -53,7 +53,7 @@ body {
 #header-toggle {
   position: relative;
   z-index: 2000; 
-  transition: left 0.3s ease;
+  transition: left 0.3s ease
 }
 #header-toggle.bx-x {
   position: relative;
