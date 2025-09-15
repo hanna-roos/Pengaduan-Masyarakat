@@ -451,7 +451,7 @@ body::before {
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 1px;
         }
 
         ::-webkit-scrollbar-track {
