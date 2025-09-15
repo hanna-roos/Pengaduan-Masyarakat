@@ -38,35 +38,23 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: var(--font-body);
-            background: linear-gradient(135deg, 
-                var(--bg-sidebar) 0%, 
-                #1e3a8a 15%, 
-                #3b82f6 35%, 
-                #60a5fa 65%, 
-                #93c5fd 85%, 
-                var(--bg-web) 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
+body {
+    font-family: var(--font-body);
+    min-height: 100vh;
+    margin: 0;
+    background: url("../../img/bg1.jpg") no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+}
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 15% 85%, rgba(10, 36, 114, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 85% 15%, rgba(0, 28, 85, 0.3) 0%, transparent 60%),
-                radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 70%),
-                radial-gradient(circle at 25% 25%, rgba(147, 197, 253, 0.15) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: -1;
-        }
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 36, 114, 0.50); /* biru transparan */
+    backdrop-filter: blur(px); 
+    z-index: -1;
+}
 
         /* Advanced Sidebar */
         .sidebar {

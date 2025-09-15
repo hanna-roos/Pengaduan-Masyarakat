@@ -1,5 +1,4 @@
 <?php
-<<<<<<< HEAD
 
 include 'koneksi/koneksi.php';
 
@@ -10,7 +9,6 @@ session_destroy();
 header('location:index.php');
 
 ?>
-=======
 session_start();
 session_destroy();
 
@@ -20,4 +18,3 @@ echo "<script>
         window.location.href = 'index.php';
     </script>";
 exit();
->>>>>>> bdc4ff8970c446a9703bcd011dc472a40946d6b9

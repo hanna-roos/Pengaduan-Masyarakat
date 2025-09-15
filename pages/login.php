@@ -29,8 +29,8 @@
         body {
             font-family: var(--font-body);
             background: linear-gradient(135deg, 
-                var(--bg-sidebar) 0%, 
-                #1e3a8a 25%, 
+                var(--bg-web) 0%, 
+                #60a5fa 25%, 
                 #3b82f6 50%, 
                 #60a5fa 75%, 
                 var(--bg-web) 100%);
