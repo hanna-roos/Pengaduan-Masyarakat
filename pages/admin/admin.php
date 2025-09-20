@@ -1,3 +1,15 @@
+<?php
+include "../koneksi/koneksi.php";
+session_start();
+if (!isset($_SESSION['email']) == 'email' && !isset($_SESSION['id_petugas']) == 'id_petugas'){
+   // true
+   echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,15 +17,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<<<<<<< HEAD
-    <link rel="stylesheet" href="../../css/admin.css">
-    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
-    <script>
-    UPLOADCARE_PUBLIC_KEY = '38882543888abfb41547';
-    </script>
-    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.css">
-=======
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -453,18 +456,17 @@ body::before {
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
-        .status-menunggu {
+        .status-pending {
             background: rgba(251, 191, 36, 0.2);
             color: #d97706;
         }
 
-        .status-dicatat {
+        .status-accept {
             background: rgba(16, 185, 129, 0.2);
             color: #059669;
         }
 
-        .status-tidak-terima {
+        .status-decline {
             background: rgba(239, 68, 68, 0.2);
             color: #dc2626;
         }
@@ -638,19 +640,17 @@ body::before {
             display: none;
         }
     </style>
->>>>>>> 001aa14ebe10136a1db7170ac5a394322bdb8806
 </head>
 
 <?php 
-session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 
 // hitung accepted
-$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Dicatat'"))['total'];
-$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Menunggu'"))['total'];
-$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Tidak Terima'"))['total'];
+$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='accept'"))['total'];
+$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='pending'"))['total'];
+$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
 
 switch ($aksi) {
     case 'edit-masyarakat':
@@ -660,136 +660,6 @@ switch ($aksi) {
 ?>
 
 <body>
-<<<<<<< HEAD
-    <!-- dashboard -->
-    <div class="wrapper" id="body-pd">
-        <header class="header" id="header">
-            <div class="header__toggle">
-                <i class='bx bx-menu' id="header-toggle"></i>
-            </div>
-
-            <div class="header__img">
-                <img src="../../img/adminpetugas.png" alt="">
-            </div>
-        </header>
-
-        <div class="l-navbar" id="nav-bar">
-            <nav class="nav">
-                <div>
-                    <a href="admin.php" class="nav__logo">
-                        <i class='bx bx-layer nav__logo-icon'></i>
-                        <span class="nav__logo-name">Citizen</span>
-                    </a>
-
-                    <div class="nav__list">
-                        <a href="admin.php" class="nav__link active">
-                        <i class='bx bx-grid-alt nav__icon' ></i>
-                            <span class="nav__name">Dashboard</span>
-                        </a>
-                        
-                        <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav__link">
-                            <i class='bx bx-message-square-detail nav__icon' ></i>
-                            <span class="nav__name">Lihat Pengaduan</span>
-                        </a>
-
-                        <a href="lihat_petugas.php?aksi=lihat-petugas" class="nav__link">
-                            <i class='bx bx-user nav__icon' ></i>
-                            <span class="nav__name">Lihat Petugas</span>
-                        </a>
-
-                        <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav__link">
-                            <i class='bx bx-user nav__icon' ></i>
-                            <span class="nav__name">Lihat Masyarakat</span>
-                        </a>
-			            <a href="lihat_report.php" class="nav__link">
-                            <i class='bx bx-file nav__icon' ></i>
-                            <span class="nav__name">Laporan</span>
-                        </a>
-
-                    </div>
-                </div>
-
-                <a href="../logout.php" class="nav__link">
-                    <i class='bx bx-log-out nav__icon' ></i>
-                    <span class="nav__name">Log Out</span>
-=======
-    <!-- Advanced Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <a href="admin.php" class="logo">
-                <div class="logo-icon">
-                    <i class='bx bx-layer'></i>
-                </div>
-                <span>CITIZEN</span>
-            </a>
-        </div>
-        
-        <nav class="nav-menu">
-            <div class="nav-item">
-                <a href="admin.php" class="nav-link">
-                    <i class='bx bx-grid-alt nav-icon'></i>
-                    <span>Dashboard</span>
->>>>>>> 001aa14ebe10136a1db7170ac5a394322bdb8806
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
-                    <i class='bx bx-message-square-detail nav-icon'></i>
-                    <span>Lihat Pengaduan</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="lihat_petugas.php?aksi=lihat-petugas" class="nav-link">
-                    <i class='bx bx-user nav-icon'></i>
-                    <span>Lihat Petugas</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav-link active">
-                    <i class='bx bx-user nav-icon'></i>
-                    <span>Lihat Masyarakat</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="lihat_report.php" class="nav-link">
-                    <i class='bx bx-file nav-icon'></i>
-                    <span>Laporan</span>
-                </a>
-            </div>
-            <div class="nav-item" style="margin-top: 2rem;">
-                <a href="../logout.php" class="nav-link">
-                    <i class='bx bx-log-out nav-icon'></i>
-                    <span>Log Out</span>
-                </a>
-            </div>
-        </nav>
-    </div>
-<<<<<<< HEAD
-=======
-
-    <!-- Advanced Header -->
-    <header class="main-header">
-        <div class="header-left">
-            <button class="menu-toggle" id="menuToggle">
-                <i class='bx bx-menu'></i>
-            </button>
-            <h1 class="header-title">Edit Data Masyarakat</h1>
-        </div>
-        
-        <div class="header-right">
-            <button class="notification-btn">
-                <i class='bx bx-bell'></i>
-            </button>
-            
-            <div class="user-profile">
-                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
-                <div class="user-info">
-                    <h6><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin'; ?></h6>
-                    <p>Administrator</p>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <!-- Main Content -->
     <main class="main-content">
@@ -809,8 +679,8 @@ switch ($aksi) {
                     <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔤 Username</label>
-                    <input type="text" name="username" class="form-control" value="<?= $data['username'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔤 email</label>
+                    <input type="text" name="email" class="form-control" value="<?= $data['email'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
                 </div>
                 <div class="mb-3">
                     <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔐 Password</label>
@@ -841,11 +711,12 @@ switch ($aksi) {
         }
     </script>
 
+
 <?php
     break;
 
     default:
-?>
+?> 
 
 <body>
     <!-- Advanced Sidebar -->
@@ -870,6 +741,12 @@ switch ($aksi) {
                 <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
                     <i class='bx bx-message-square-detail nav-icon'></i>
                     <span>Lihat Pengaduan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_tanggapan.php" class="nav-link">
+                    <i class='bx bx-bookmark nav-icon'></i>
+                    <span>Lihat Tanggapan</span>
                 </a>
             </div>
             <div class="nav-item">
@@ -916,7 +793,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin'; ?></h6>
+                    <h6>Admin</h6>
                     <p>Administrator</p>
                 </div>
             </div>
@@ -958,11 +835,11 @@ switch ($aksi) {
             </div>
         </section>
 
-        <!-- Recent Reports Section -->
+        <!-- Content Section -->
         <section class="content-card fade-in-up">
             <h3 class="card-title">
                 <div class="card-icon">
-                    <i class='bx bx-file-blank'></i>
+                    <i class='bx bx-message-square-detail'></i>
                 </div>
                 Data Pengaduan Masyarakat
             </h3>
@@ -977,12 +854,11 @@ switch ($aksi) {
                             <th>NIK</th>
                             <th>Isi Laporan</th>
                             <th>Status</th>
-                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $query = mysqli_query($config, "SELECT * FROM pengaduan");
+                        $query = mysqli_query($config, "SELECT * FROM pengaduan ORDER BY tgl_pengaduan DESC");
                         $no = 1;
                         while ($row = mysqli_fetch_array($query)) {
                         ?>
@@ -990,26 +866,22 @@ switch ($aksi) {
                             <td><?php echo $no++ ?></td>
                             <td>
                                 <?php if($row['foto']): ?>
-                                    <img src="<?php echo $row['foto']; ?>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                                    <img src="<?php echo $row['foto']; ?>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                                 <?php else: ?>
-                                    <span style="color: #9ca3af;">No Image</span>
+                                    <span style="color: #9ca3af; font-style: italic;">No Image</span>
                                 <?php endif; ?>
                             </td>
                             <td><?php echo date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
                             <td><?php echo $row['nik'] ?></td>
-                            <td><?php echo substr($row['isi_laporan'], 0, 50) . '...' ?></td>
+                            <td style="max-width: 300px;">
+                                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo $row['isi_laporan'] ?>">
+                                    <?php echo substr($row['isi_laporan'], 0, 80) . (strlen($row['isi_laporan']) > 80 ? '...' : '') ?>
+                                </div>
+                            </td>
                             <td>
                                 <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>">
                                     <?php echo $row['status'] ?>
                                 </span>
-                            </td>
-                            <td class="action-buttons">
-                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Dicatat"
-                                    class="btn-success-custom">Accept</a>
-                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Menunggu"
-                                    class="btn-warning-custom">Pending</a>
-                                <a href="switch_admin.php?aksi=update-status&id_pengaduan=<?= $row['id_pengaduan'] ?>&status=Tidak Terima"
-                                    class="btn-danger-custom">Decline</a>
                             </td>
                         </tr>
                         <?php } ?>
@@ -1030,7 +902,6 @@ switch ($aksi) {
             });
         }
     </script>
->>>>>>> 001aa14ebe10136a1db7170ac5a394322bdb8806
     
     <?php
     break;

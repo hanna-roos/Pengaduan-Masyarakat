@@ -4,28 +4,34 @@ include "koneksi/koneksi.php";
 
 $nik      = $_POST['nik'];
 $nama     = $_POST['nama'];
-$username = $_POST['username'];
+$email    = $_POST['email'];
 $password = md5($_POST['password']);
 $telp     = $_POST['telp'];
 
-// mencari semua data username 
-$query = mysqli_query($config, "SELECT * from masyarakat WHERE nik = '$nik'");
-// menghitung jumlah baris query
-$cek = mysqli_num_rows($query);
+// cek NIK
+$queryNik = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik = '$nik'");
+$cekNik   = mysqli_num_rows($queryNik);
 
+// cek Email
+$queryEmail = mysqli_query($config, "SELECT * FROM masyarakat WHERE email = '$email'");
+$cekEmail   = mysqli_num_rows($queryEmail);
 
-if($cek > 0){
-   echo "<script>
-   alert('NIK $nik sudah ada yang menggunakan, Silahkan Registrasi Kembali');
-   window.location.href = 'regis.php';
-   </script>";
-   // kalo ada data dengan username tersebut maka akan disuru registrasi ulang
+if ($cekNik > 0) {
+    echo "<script>
+        alert('NIK $nik sudah digunakan, silahkan registrasi kembali!');
+        window.location.href = 'regis.php';
+    </script>";
+} elseif ($cekEmail > 0) {
+    echo "<script>
+        alert('Email $email sudah digunakan, silahkan gunakan email lain!');
+        window.location.href = 'regis.php';
+    </script>";
 } else {
-   mysqli_query($config, "INSERT INTO masyarakat VALUES('$nik', '$nama', '$username', '$password', '$telp')");
-   echo "<script>
-   alert('Data berhasil ditambahkan, Silahkan Login Kembali!');
-   window.location.href = 'index.php';
-   </script>";
-   // kalo username nya gak ada di database maka registrasi berhasil
+    mysqli_query($config, "INSERT INTO masyarakat (nik, nama, email, password, telp) 
+                           VALUES('$nik', '$nama', '$email', '$password', '$telp')");
+    echo "<script>
+        alert('Data berhasil ditambahkan, silahkan login kembali!');
+        window.location.href = 'index.php';
+    </script>";
 }
 ?>

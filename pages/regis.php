@@ -519,8 +519,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Isi Username Anda" required>
+                            <label for="email">email:</label>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Isi email Anda" required>
                             <span class="input-icon mt-3">🔤</span>
                         </div>
 
@@ -532,7 +532,7 @@
 
                         <div class="form-group">
                             <label for="telp">Telepon:</label>
-                            <input type="number" class="form-control" name="telp" id="telp" placeholder="Isi No. Telepon Anda" required>
+                            <input type="text" class="form-control" name="telp" id="telp" placeholder="Isi No. Telepon Anda" required>
                             <!-- <span class="input-icon mt-3">📱</span> -->
                         </div>
 

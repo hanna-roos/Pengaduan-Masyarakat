@@ -558,7 +558,6 @@ body::before {
 </head>
 
 <?php 
-session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
@@ -590,6 +589,12 @@ switch ($aksi) {
                 <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
                     <i class='bx bx-message-square-detail nav-icon'></i>
                     <span>Lihat Pengaduan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_tanggapan.php" class="nav-link">
+                    <i class='bx bx-bookmark nav-icon'></i>
+                    <span>Lihat Tanggapan</span>
                 </a>
             </div>
             <div class="nav-item">
@@ -636,7 +641,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin'; ?></h6>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Admin'; ?></h6>
                     <p>Administrator</p>
                 </div>
             </div>
@@ -677,8 +682,8 @@ switch ($aksi) {
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">🔤 Username</label>
-                                    <input type="text" class="form-control" name="username" placeholder="Isi Username Anda" required>
+                                    <label for="email" class="form-label">🔤 email</label>
+                                    <input type="text" class="form-control" name="email" placeholder="Isi email Anda" required>
                                 </div>
 
                                 <div class="mb-3">
@@ -726,7 +731,7 @@ switch ($aksi) {
                             <th>No</th>
                             <th>ID Petugas</th>
                             <th>Nama</th>
-                            <th>Username</th>
+                            <th>email</th>
                             <th>Password</th>
                             <th>Telp</th>
                             <th>Level</th>
@@ -743,7 +748,7 @@ switch ($aksi) {
                             <td><?php echo $no++ ?></td>
                             <td><?php echo $row['id_petugas'] ?></td>
                             <td><?php echo $row['nama_petugas'] ?></td>
-                            <td><?php echo $row['username'] ?></td>
+                            <td><?php echo $row['email'] ?></td>
                             <td><?php echo $row['password'] ?></td>
                             <td><?php echo $row['telp'] ?></td>
                             <td>

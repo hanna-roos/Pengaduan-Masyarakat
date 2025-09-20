@@ -572,19 +572,19 @@ switch ($aksi) {
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
+                <a href="lihat_pengaduan.php" class="nav-link">
                     <i class='bx bx-message-square-detail nav-icon'></i>
                     <span>Lihat Pengaduan</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_tanggapan.php?aksi=lihat-tanggapan" class="nav-link active">
+                <a href="lihat_tanggapan.php" class="nav-link active">
                     <i class='bx bx-bookmark nav-icon'></i>
                     <span>Lihat Tanggapan</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav-link">
+                <a href="lihat_masyarakat.php" class="nav-link">
                     <i class='bx bx-user nav-icon'></i>
                     <span>Lihat Masyarakat</span>
                 </a>
@@ -613,9 +613,9 @@ switch ($aksi) {
             </button>
             
             <div class="user-profile">
-                <img src="../../img/lol.png" alt="Profile" class="user-avatar">
+                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Petugas'; ?></h6>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Petugas'; ?></h6>
                     <p>Petugas</p>
                 </div>
             </div>
@@ -764,9 +764,9 @@ switch ($aksi) {
             </button>
             
             <div class="user-profile">
-                <img src="../../img/lol.png" alt="Profile" class="user-avatar">
+                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Petugas'; ?></h6>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Petugas'; ?></h6>
                     <p>Petugas</p>
                 </div>
             </div>

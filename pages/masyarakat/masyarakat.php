@@ -1,7 +1,7 @@
 <?php
 include "../koneksi/koneksi.php";
 session_start();
-if (!isset($_SESSION['username']) == 'username'){
+if (!isset($_SESSION['email']) == 'email' && !isset($_SESSION['nik']) == 'nik'){
    // true
    echo "<script>
    alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
@@ -1006,7 +1006,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/lol.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo $_SESSION['username'] ?></h6>
+                    <h6><?php echo $_SESSION['email'] ?></h6>
                     <p>Masyarakat</p>
                 </div>
             </div>
@@ -1017,7 +1017,7 @@ switch ($aksi) {
     <main class="main-content">
         <!-- Hero Section -->
         <section class="hero-section fade-in-up">
-            <h1 class="hero-title text-white">Selamat Datang, <?php echo $_SESSION['username'] ?>! 👋</h1>
+            <h1 class="hero-title text-white">Selamat Datang, <?php echo $_SESSION['email'] ?>! 👋</h1>
             <p class="hero-subtitle text-white">Sampaikan pengaduan Anda dan bantu kami menciptakan perubahan yang lebih baik untuk masyarakat.</p>
             
             <div class="quick-actions">
@@ -1361,7 +1361,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/lol.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo $_SESSION['username'] ?></h6>
+                    <h6><?php echo $_SESSION['email'] ?></h6>
                     <p>Masyarakat</p>
                 </div>
             </div>
@@ -1577,7 +1577,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/lol.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo $_SESSION['username'] ?></h6>
+                    <h6><?php echo $_SESSION['email'] ?></h6>
                     <p>Masyarakat</p>
                 </div>
             </div>
@@ -1804,7 +1804,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/lol.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo $_SESSION['username'] ?></h6>
+                    <h6><?php echo $_SESSION['email'] ?></h6>
                     <p>Masyarakat</p>
                 </div>
             </div>
@@ -1825,7 +1825,7 @@ switch ($aksi) {
                     </div>
                     
                     <h4 style="margin: 0 0 0.5rem 0; color: var(--title); font-weight: 700;"><?= $row['nama']; ?></h4>
-                    <p style="margin: 0 0 2rem 0; color: var(--text-black); opacity: 0.7;">@<?= $row['username']; ?></p>
+                    <p style="margin: 0 0 2rem 0; color: var(--text-black); opacity: 0.7;">@<?= $row['email']; ?></p>
                     
                     <div style="display: flex; flex-direction: column; gap: 1rem; text-align: left;">
                         <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: rgba(59, 130, 246, 0.1); border-radius: 12px;">
@@ -1870,8 +1870,8 @@ switch ($aksi) {
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label">🔤 Username</label>
-                            <input type="text" class="form-control" name="username" value="<?= $row['username'] ?>" required>
+                            <label class="form-label">🔤 email</label>
+                            <input type="text" class="form-control" name="email" value="<?= $row['email'] ?>" required>
                         </div>
                     </div>
 

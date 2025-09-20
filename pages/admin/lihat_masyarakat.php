@@ -538,7 +538,6 @@ body::before {
 </head>
 
 <?php 
-session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
@@ -548,59 +547,6 @@ switch ($aksi) {
 ?>
 
 <body>
-<<<<<<< HEAD
-    <!-- dashboard -->
-    <div class="wrapper" id="body-pd">
-        <header class="header" id="header">
-            <div class="header__toggle">
-                <i class='bx bx-menu' id="header-toggle"></i>
-            </div>
-
-            <div class="header__img">
-                <img src="../../img/adminpetugas.png" alt="">
-            </div>
-        </header>
-
-        <div class="l-navbar" id="nav-bar">
-            <nav class="nav">
-                <div>
-                    <a href="admin.php" class="nav__logo">
-                        <i class='bx bx-layer nav__logo-icon'></i>
-                        <span class="nav__logo-name">Citizen</span>
-                    </a>
-
-                    <div class="nav__list">
-                        <a href="admin.php" class="nav__link">
-                        <i class='bx bx-grid-alt nav__icon' ></i>
-                            <span class="nav__name">Dashboard</span>
-                        </a>
-                        
-                        <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav__link">
-                            <i class='bx bx-message-square-detail nav__icon' ></i>
-                            <span class="nav__name">Lihat Pengaduan</span>
-                        </a>
-
-                        <a href="lihat_petugas.php?aksi=lihat-petugas" class="nav__link">
-                            <i class='bx bx-user nav__icon' ></i>
-                            <span class="nav__name">Lihat Petugas</span>
-                        </a>
-
-                        <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav__link active">
-                            <i class='bx bx-user nav__icon' ></i>
-                            <span class="nav__name">Lihat Masyarakat</span>
-                        </a>
-			            <a href="lihat_report.php" class="nav__link">
-                            <i class='bx bx-file nav__icon' ></i>
-                            <span class="nav__name">Laporan</span>
-                        </a>
-
-                    </div>
-                </div>
-
-                <a href="../logout.php" class="nav__link">
-                    <i class='bx bx-log-out nav__icon' ></i>
-                    <span class="nav__name">Log Out</span>
-=======
     <!-- Advanced Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -617,13 +563,18 @@ switch ($aksi) {
                 <a href="admin.php" class="nav-link">
                     <i class='bx bx-grid-alt nav-icon'></i>
                     <span>Dashboard</span>
->>>>>>> 001aa14ebe10136a1db7170ac5a394322bdb8806
                 </a>
             </div>
             <div class="nav-item">
                 <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
                     <i class='bx bx-message-square-detail nav-icon'></i>
                     <span>Lihat Pengaduan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_tanggapan.php" class="nav-link">
+                    <i class='bx bx-bookmark nav-icon'></i>
+                    <span>Lihat Tanggapan</span>
                 </a>
             </div>
             <div class="nav-item">
@@ -670,7 +621,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Admin'; ?></h6>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Admin'; ?></h6>
                     <p>Administrator</p>
                 </div>
             </div>
@@ -716,8 +667,8 @@ switch ($aksi) {
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="username" class="form-label">🔤 Username</label>
-                                    <input type="text" class="form-control" name="username" placeholder="Isi Username Anda" required>
+                                    <label for="email" class="form-label">🔤 email</label>
+                                    <input type="text" class="form-control" name="email" placeholder="Isi email Anda" required>
                                 </div>
 
                                 <div class="mb-3">
@@ -756,7 +707,7 @@ switch ($aksi) {
                             <th>No</th>
                             <th>NIK</th>
                             <th>Nama</th>
-                            <th>Username</th>
+                            <th>email</th>
                             <th>Password</th>
                             <th>Aksi</th>
                         </tr>
@@ -771,7 +722,7 @@ switch ($aksi) {
                             <td><?php echo $no++ ?></td>
                             <td><?php echo $row['nik'] ?></td>
                             <td><?php echo $row['nama'] ?></td>
-                            <td><?php echo $row['username'] ?></td>
+                            <td><?php echo $row['email'] ?></td>
                             <td><?php echo $row['password'] ?></td>
                             <td>
                                 <a href="admin.php?aksi=edit-masyarakat&id=<?= $row['nik'] ?>" class="btn-success-custom">

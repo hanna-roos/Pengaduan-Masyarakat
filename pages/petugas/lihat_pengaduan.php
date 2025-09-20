@@ -583,7 +583,6 @@ body::before {
 </head>
 
 <?php 
-session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
@@ -658,9 +657,9 @@ switch ($aksi) {
             </button>
             
             <div class="user-profile">
-                <img src="../../img/lol.png" alt="Profile" class="user-avatar">
+                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6><?php echo isset($_SESSION['username']) ? $_SESSION['username'] : 'Petugas'; ?></h6>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Petugas'; ?></h6>
                     <p>Petugas</p>
                 </div>
             </div>
@@ -741,7 +740,7 @@ switch ($aksi) {
                             </td>
                             <td>
                                 <div style="display: flex; gap: 0.5rem; flex-direction: column;">
-                                    <a href="petugas.php?aksi=status-accept&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn-primary-custom" style="text-align: center;">
+                                    <a href="switch_petugas.php?aksi=status-accept&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn-primary-custom" style="text-align: center;">
                                         <i class='bx bx-message-square-add'></i>
                                         Tanggapi
                                     </a>

@@ -502,9 +502,23 @@
                 <div class="card-body">
                     <h3 class="login-title">LOGIN</h3>
                     <form action="cek_login.php" method="post">
+                        <!-- NIK field (for masyarakat) -->
+                        <div class="form-group" id="nik-field">
+                            <label for="nik">NIK:</label>
+                            <input type="text" class="form-control" name="nik" id="nik" placeholder="Isi NIK Anda">
+                            <span class="input-icon mt-3">🆔</span>
+                        </div>
+
+                        <!-- ID Petugas field (for petugas/admin) -->
+                        <div class="form-group" id="id-petugas-field" style="display: none;">
+                            <label for="id_petugas">ID Petugas:</label>
+                            <input type="text" class="form-control" name="id_petugas" id="id_petugas" placeholder="Isi ID Petugas Anda">
+                            <span class="input-icon mt-3">🆔</span>
+                        </div>
+
                         <div class="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Isi Username Anda" required>
+                            <label for="email">Email:</label>
+                            <input type="text" class="form-control" name="email" id="email" placeholder="Isi email Anda" required>
                             <span class="input-icon mt-3">👤</span>
                         </div>
 
@@ -535,6 +549,31 @@
             </div>
         </div>
     </div>
+    <script>
+    const levelSelect = document.getElementById('level');
+    const nikField = document.getElementById('nik-field');
+    const idPetugasField = document.getElementById('id-petugas-field');
+
+    levelSelect.addEventListener('change', function() {
+        if (this.value === 'masyarakat') {
+            nikField.style.display = 'block';
+            idPetugasField.style.display = 'none';
+            document.getElementById('nik').required = true;
+            document.getElementById('id_petugas').required = false;
+        } else if (this.value === 'petugas' || this.value === 'admin') {
+            nikField.style.display = 'none';
+            idPetugasField.style.display = 'block';
+            document.getElementById('nik').required = false;
+            document.getElementById('id_petugas').required = true;
+        } else {
+            nikField.style.display = 'none';
+            idPetugasField.style.display = 'none';
+            document.getElementById('nik').required = false;
+            document.getElementById('id_petugas').required = false;
+        }
+    });
+</script>
+
 </body>
 <script src="load.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>

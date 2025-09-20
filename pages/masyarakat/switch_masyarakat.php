@@ -53,7 +53,7 @@ case 'edit-pengaduan':
     case 'edit-profile':
     $nik_lama = $_POST['nik_lama']; // NIK asli dari database (hidden input)
     $nama     = $_POST['nama'];
-    $username = $_POST['username'];
+    $email = $_POST['email'];
     $telp     = $_POST['telp'];
 
     // Cek apakah NIK baru sudah dipakai user lain (selain dirinya sendiri)
@@ -67,7 +67,7 @@ case 'edit-pengaduan':
         // Update data
         mysqli_query($config, "UPDATE masyarakat SET 
             nama = '$nama',
-            username = '$username',
+            email = '$email',
             telp = '$telp'
             WHERE nik = '$nik_lama'");
 
