@@ -734,7 +734,7 @@ switch ($aksi) {
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <form action="switch_admin.php?aksi=tambah-masyarakat" method="post">
+                <form action="switch_petugas.php?aksi=tambah-masyarakat" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="nik" class="form-label">🆔 NIK</label>

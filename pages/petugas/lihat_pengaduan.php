@@ -588,9 +588,9 @@ include "../koneksi/koneksi.php";
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 
 // hitung accepted
-$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='accept'"))['total'];
-$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='pending'"))['total'];
-$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
+$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Dicatat'"))['total'];
+$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Menunggu'"))['total'];
+$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Tidak Terima'"))['total'];
 
 switch ($aksi) {
     default:
@@ -740,11 +740,12 @@ switch ($aksi) {
                             </td>
                             <td>
                                 <div style="display: flex; gap: 0.5rem; flex-direction: column;">
-                                    <a href="switch_petugas.php?aksi=status-accept&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn-primary-custom" style="text-align: center;">
+                                    <a href="PetugasStatusAccept.php?aksi=status-accept&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn-primary-custom" style="text-align: center;">
                                         <i class='bx bx-message-square-add'></i>
                                         Tanggapi
                                     </a>
-                                    <a href="switch_petugas.php?aksi=status-decline&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn-secondary-custom" style="text-align: center;">
+                                    <a href="switch_petugas.php?aksi=status-decline&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn-secondary-custom" style="text-align: center;" onclick="return confirm('Are you sure you want to decline this report?');">
+                                        <input type="hidden" name="id_pengaduan" value="<?= $row['id_pengaduan'] ?>">
                                         <i class='bx bx-x'></i>
                                         Decline
                                     </a>
