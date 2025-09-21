@@ -2,21 +2,23 @@
 include '../koneksi/koneksi.php';
 switch ($_GET['aksi']) {
 case 'tambah-pengaduan':
-   $tgl_pengaduan       = $_POST['tgl_pengaduan'];
-   $id_masyarakat                 = $_POST['id_masyarakat'];  // ambil dari form
-   $isi_laporan         = $_POST['isi_laporan'];
-   $foto                = $_POST['foto'];
-   $status              = $_POST['status'];
+   $tgl_pengaduan  = $_POST['tgl_pengaduan'];
+   $id_masyarakat  = $_POST['id_masyarakat'];
+   $nik            = $_POST['nik'];          // tambahin ini
+   $isi_laporan    = $_POST['isi_laporan'];
+   $foto           = $_POST['foto'];
+   $status         = $_POST['status'];
 
-   $sql = "INSERT INTO pengaduan (tgl_pengaduan, id_masyarakat, isi_laporan, foto, status) 
-           VALUES ('$tgl_pengaduan', '$id_masyarakat', '$isi_laporan', '$foto', 'pending')";
+   $sql = "INSERT INTO pengaduan (tgl_pengaduan, id_masyarakat, nik, isi_laporan, foto, status) 
+           VALUES ('$tgl_pengaduan', '$id_masyarakat', '$nik', '$isi_laporan', '$foto', 'pending')";
    mysqli_query($config, $sql) or die(mysqli_error($config));
 
    echo "<script>
    alert('Pengaduan berhasil dikirim');
-   window.location.href = 'masyarakat.php?aksi-tambah-pengaduan';
+   window.location.href = 'masyarakat.php?aksi=lihat-pengaduan';
    </script>";
    break;
+
    
 case 'edit-pengaduan':
     $id_pengaduan = $_POST['id_pengaduan'];

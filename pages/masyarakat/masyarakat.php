@@ -1107,7 +1107,6 @@ switch ($aksi) {
                         <thead>
                             <tr>
                                 <th>Tanggal</th>
-                                <th>NIK</th>
                                 <th>Isi Laporan</th>
                                 <th>Status</th>
                             </tr>
@@ -1121,7 +1120,6 @@ switch ($aksi) {
                             ?>
                                 <tr>
                                     <td><?php echo date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
-                                    <td><?php echo $row['nik'] ?></td>
                                     <td><?php echo substr($row['isi_laporan'], 0, 50) . '...' ?></td>
                                     <td>
                                         <span class="status-badge status-<?php echo $row['status'] ?>">
@@ -1457,6 +1455,8 @@ switch ($aksi) {
                     </div>
 
                         <input type="hidden" class="form-control" name="id_masyarakat" value="<?= $row['id_masyarakat']; ?>"/>
+
+                        <input type="hidden" class="form-control" name="nik" value="<?= $row['nik']; ?>"/>
                     
                     <div class="form-group">
                         <label class="form-label">📝 Isi Laporan</label>
@@ -1646,7 +1646,6 @@ switch ($aksi) {
                         <tr>
                             <th>No</th>
                             <th>Tanggal</th>
-                            <th>NIK</th>
                             <th>Isi Laporan</th>
                             <th>Foto</th>
                             <th>Tanggapan</th>
@@ -1670,7 +1669,6 @@ switch ($aksi) {
                             <tr>
                                 <td><?php echo $no++ ?></td>
                                 <td><?php echo date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
-                                <td><?php echo $row['id_masyarakat'] ?></td>
                                 <td><?php echo substr($row['isi_laporan'], 0, 100) . '...' ?></td>
                                 <td>
                                     <?php if($row['foto']): ?>
