@@ -54,55 +54,6 @@ case 'edit-pengaduan':
       break;
 
 
-//pengaduan edit status
-
-case 'status-accept':
-
-    $id_petugas = $_SESSION['id_petugas'];
-
-     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tanggapi'])) {
-            $id_pengaduan   = isset($_POST['id_pengaduan']) ? (int) $_POST['id_pengaduan'] : 0;
-            $tanggapan_raw  = $_POST['tanggapan'] ?? '';
-            $tanggapan      = mysqli_real_escape_string($config, $tanggapan_raw);
-            $tgl_tanggapan  = date('Y-m-d H:i:s');
-
-            if ($id_pengaduan <= 0 || $tanggapan === '') {
-                echo "<script>
-                        alert('Data tidak lengkap. Pastikan id pengaduan dan tanggapan terisi.');
-                        window.location.href = 'lihat_pengaduan.php';
-                      </script>";
-                break;
-            }
-
-            // Update status pengaduan
-            $query_pengaduan = "UPDATE pengaduan SET status='accept' WHERE id_pengaduan='$id_pengaduan'";
-            $result_pengaduan = mysqli_query($config, $query_pengaduan);
-
-            // Insert tanggapan with a valid id_petugas from SESSION
-            $query_tanggapan = "INSERT INTO tanggapan (id_pengaduan, tgl_tanggapan, tanggapan, id_petugas) 
-                                VALUES ('$id_pengaduan', '$tgl_tanggapan', '$tanggapan', '$id_petugas')";
-            $result_tanggapan = mysqli_query($config, $query_tanggapan);
-
-            if ($result_pengaduan && $result_tanggapan) {
-                echo "<script>
-                        alert('Tanggapan berhasil disimpan!');
-                        window.location.href = 'lihat_pengaduan.php';
-                      </script>";
-            } else {
-                // Show the DB error so you can see if it's FK or something else
-                $err = addslashes(mysqli_error($config));
-                echo "<script>
-                        alert('Gagal menyimpan tanggapan! $err');
-                        window.location.href = 'lihat_pengaduan.php';
-                      </script>";
-            }
-        } else {
-            // If someone hits this route without POST form
-            header('Location: lihat_pengaduan.php');
-        }
-        break;
-
-
     case 'status-decline':
         if (isset($_GET['id_pengaduan'])) {
     $id_pengaduan = $_GET['id_pengaduan'];

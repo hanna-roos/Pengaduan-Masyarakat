@@ -1,3 +1,16 @@
+<?php
+include "../koneksi/koneksi.php";
+session_start();
+// Periksa apakah sesi tersedia
+if (!isset($_SESSION['id_petugas']) && !isset($_SESSION['email'])) {
+    echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+    exit();
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -588,9 +601,9 @@ include "../koneksi/koneksi.php";
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 
 // hitung accepted
-$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Dicatat'"))['total'];
-$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Menunggu'"))['total'];
-$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='Tidak Terima'"))['total'];
+$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='accept'"))['total'];
+$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='pending'"))['total'];
+$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
 
 switch ($aksi) {
     default:

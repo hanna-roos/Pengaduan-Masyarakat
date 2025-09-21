@@ -1,12 +1,12 @@
 <?php 
 session_start();
 include "../koneksi/koneksi.php";
-if (!isset($_SESSION['email']) == 'email' && !isset($_SESSION['id_petugas']) == 'id petugas'){
-   // true
-   echo "<script>
+if (!isset($_SESSION['id_petugas']) && !isset($_SESSION['email'])) {
+    echo "<script>
    alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
    window.location.href = '../index.php';
    </script>";
+    exit();
 }
 // hitung accepted, pending, decline
 $pengaduan = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan "))['total'];

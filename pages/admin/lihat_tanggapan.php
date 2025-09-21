@@ -693,7 +693,7 @@ switch ($aksi) {
                                     </a>
                                     <a href="switch_admin.php?aksi=tanggapan-hapus&id_pengaduan=<?= $row['id_pengaduan'] ?>" class="btn-secondary-custom" style="text-align: center;" onclick="return confirm('Yakin ingin menghapus tanggapan ini?')">
                                         <i class='bx bx-trash'></i>
-                                        Delete
+                                        Deletec
                                     </a>
                                 </div>
                             </td>

@@ -1,3 +1,16 @@
+<?php
+include "../koneksi/koneksi.php";
+session_start();
+// Periksa apakah sesi tersedia
+if (!isset($_SESSION['id_petugas']) && !isset($_SESSION['email'])) {
+    echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+    exit();
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>

@@ -1,17 +1,25 @@
+<?php
+include "../koneksi/koneksi.php";
+session_start();
+// Periksa apakah sesi tersedia
+if (!isset($_SESSION['id_petugas']) && !isset($_SESSION['email'])) {
+    echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+    exit();
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Petugas Dashboard</title>
+    <title>Data Masyarakat</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script>
-    UPLOADCARE_PUBLIC_KEY = '38882543888abfb41547';
-    </script>
-    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.css">
     
     <style>
         :root {
@@ -38,7 +46,7 @@
             box-sizing: border-box;
         }
 
-body {
+        body {
     font-family: var(--font-body);
     min-height: 100vh;
     margin: 0;
@@ -278,6 +286,8 @@ body::before {
             opacity: 0.7;
         }
 
+
+
         /* Main Content */
         .main-content {
             margin-left: 280px;
@@ -387,6 +397,7 @@ body::before {
             background: rgba(10, 36, 114, 0.05);
         }
 
+        /* Button Styling */
         .btn-primary-custom {
             background: var(--primary-gradient);
             border: none;
@@ -401,6 +412,7 @@ body::before {
             overflow: hidden;
             text-decoration: none;
             display: inline-block;
+            margin-bottom: 1.5rem;
         }
 
         .btn-primary-custom:hover {
@@ -409,95 +421,72 @@ body::before {
             color: var(--text-white);
         }
 
-        .btn-secondary-custom {
-            background: rgba(239, 68, 68, 0.8);
-            border: none;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-            color: var(--text-white);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-secondary-custom:hover {
-            background: rgba(239, 68, 68, 1);
-            color: var(--text-white);
-        }
-
         .btn-success-custom {
-            background: rgba(16, 185, 129, 0.8);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             border: none;
             border-radius: 12px;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             color: var(--text-white);
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            margin: 0.25rem;
         }
 
         .btn-success-custom:hover {
-            background: rgba(16, 185, 129, 1);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+            color: var(--text-white);
+        }
+
+        .btn-danger-custom {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        .btn-danger-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
             color: var(--text-white);
         }
 
         /* Modal Styling */
         .modal-content {
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 20px;
+            box-shadow: var(--shadow-heavy);
         }
 
         .modal-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: var(--primary-gradient);
-            color: var(--text-white);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 20px 20px 0 0;
         }
 
-        .modal-title {
-            color: var(--text-white);
-        }
-
-        .btn-close {
-            filter: invert(1);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--title);
-            font-size: 0.9rem;
-        }
-
         .form-control {
-            width: 100%;
-            padding: 0.875rem 1rem;
-            border: 2px solid rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(10, 36, 114, 0.2);
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            font-size: 0.95rem;
+            padding: 0.875rem;
             transition: all 0.3s ease;
         }
 
         .form-control:focus {
-            outline: none;
             border-color: var(--bg-sidebar);
             box-shadow: 0 0 0 3px rgba(10, 36, 114, 0.1);
-            transform: translateY(-2px);
         }
 
         /* Responsive Design */
@@ -560,21 +549,10 @@ body::before {
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-gradient);
         }
-
-        /* Legacy wrapper styles for backward compatibility */
-        .wrapper {
-            position: relative;
-        }
-
-        /* Hide legacy navbar and header */
-        .l-navbar, .header {
-            display: none;
-        }
     </style>
 </head>
 
 <?php 
-session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
@@ -584,7 +562,7 @@ switch ($aksi) {
 ?>
 
 <body>
-    <!-- Advanced Sidebar -->
+     <!-- Advanced Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="petugas.php" class="logo">
@@ -603,19 +581,19 @@ switch ($aksi) {
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_pengaduan.php" class="nav-link">
+                <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
                     <i class='bx bx-message-square-detail nav-icon'></i>
                     <span>Lihat Pengaduan</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_tanggapan.php" class="nav-link">
+                <a href="lihat_tanggapan.php?aksi=lihat-tanggapan" class="nav-link">
                     <i class='bx bx-bookmark nav-icon'></i>
                     <span>Lihat Tanggapan</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_masyarakat.php" class="nav-link active">
+                <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav-link active">
                     <i class='bx bx-user nav-icon'></i>
                     <span>Lihat Masyarakat</span>
                 </a>
@@ -635,7 +613,7 @@ switch ($aksi) {
             <button class="menu-toggle" id="menuToggle">
                 <i class='bx bx-menu'></i>
             </button>
-            <h1 class="header-title">Data Masyarakat</h1>
+            <h1 class="header-title">Data Pengaduan Masyarakat</h1>
         </div>
         
         <div class="header-right">
@@ -644,7 +622,7 @@ switch ($aksi) {
             </button>
             
             <div class="user-profile">
-                <img src="../../img/adminpetugas.png " alt="Profile" class="user-avatar">
+                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
                     <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Petugas'; ?></h6>
                     <p>Petugas</p>
@@ -657,25 +635,22 @@ switch ($aksi) {
     <main class="main-content">
         <!-- Hero Section -->
         <section class="hero-section fade-in-up">
-            <h1 class="hero-title">👥 Data Masyarakat</h1>
-            <p class="hero-subtitle">Kelola data masyarakat yang terdaftar dalam sistem pengaduan dengan mudah dan efisien.</p>
+            <h1 class="hero-title">Tampilan Data Masyarakat 👥</h1>
+            <p class="hero-subtitle">Kelola data masyarakat yang terdaftar dalam sistem pengaduan. Tambah, edit, atau hapus data sesuai kebutuhan.</p>
         </section>
 
-        <!-- Action Button -->
-        <section class="content-card fade-in-up" style="padding: 1.5rem;">
-            <button type="button" class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                <i class='bx bx-plus'></i>
-                Tambah Masyarakat
-            </button>
-        </section>
-
-        <!-- Table Section -->
+        <!-- Content Section -->
         <section class="content-card fade-in-up">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn-primary-custom d-flex gap-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <i class='bx bx-plus' style="margin-top:2.8px;"></i> Tambah Masyarakat
+            </button>
+
             <h3 class="card-title">
                 <div class="card-icon">
                     <i class='bx bx-group'></i>
                 </div>
-                Daftar Masyarakat Terdaftar
+                Data Masyarakat Terdaftar
             </h3>
             
             <div class="table-responsive">
@@ -703,16 +678,12 @@ switch ($aksi) {
                             <td><?php echo $row['email'] ?></td>
                             <td><?php echo $row['password'] ?></td>
                             <td>
-                                <div style="display: flex; gap: 0.5rem; flex-direction: column;">
-                                    <a href="petugas.php?aksi=edit-masyarakat&id=<?= $row['nik'] ?>" class="btn-success-custom" style="text-align: center;">
-                                        <i class='bx bx-edit'></i>
-                                        Edit
-                                    </a>
-                                    <a href="switch_petugas.php?aksi=hapus-masyarakat&nik=<?php echo $row['nik'] ?>" class="btn-secondary-custom" style="text-align: center;" onclick="return confirm('Yakin ingin menghapus data masyarakat ini?')">
-                                        <i class='bx bx-trash'></i>
-                                        Hapus
-                                    </a>
-                                </div>
+                                <a href="lihat_masyarakat.php?aksi=edit-masyarakat&nik=<?= $row['nik'] ?>" class="btn-success-custom">
+                                    <i class='bx bx-edit'></i> Edit
+                                </a>
+                                <a href="switch_petugas.php?aksi=hapus-masyarakat&nik=<?php echo $row['nik'] ?>" class="btn-danger-custom" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                    <i class='bx bx-trash'></i> Hapus
+                                </a>
                             </td>
                         </tr>
                         <?php } ?>
@@ -720,62 +691,123 @@ switch ($aksi) {
                 </table>
             </div>
         </section>
+        
     </main>
 
-    <!-- Modal -->
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                        <i class='bx bx-user-plus'></i>
-                        Tambah Masyarakat
-                    </h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <?php
+    break;
+
+    case 'edit-masyarakat':
+    $nik = $_GET['nik'];
+    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$nik'");
+    $data = mysqli_fetch_array($query);
+
+    ?>
+
+     <!-- Advanced Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="petugas.php" class="logo">
+                <div class="logo-icon">
+                    <i class='bx bx-layer'></i>
                 </div>
+                <span>CITIZEN</span>
+            </a>
+        </div>
+        
+        <nav class="nav-menu">
+            <div class="nav-item">
+                <a href="petugas.php" class="nav-link">
+                    <i class='bx bx-grid-alt nav-icon'></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
+                    <i class='bx bx-message-square-detail nav-icon'></i>
+                    <span>Lihat Pengaduan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_tanggapan.php?aksi=lihat-tanggapan" class="nav-link">
+                    <i class='bx bx-bookmark nav-icon'></i>
+                    <span>Lihat Tanggapan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav-link active">
+                    <i class='bx bx-user nav-icon'></i>
+                    <span>Lihat Masyarakat</span>
+                </a>
+            </div>
+            <div class="nav-item" style="margin-top: 2rem;">
+                <a href="../logout.php" class="nav-link">
+                    <i class='bx bx-log-out nav-icon'></i>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </nav>
+    </div>
 
-                <form action="switch_petugas.php?aksi=tambah-masyarakat" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="nik" class="form-label">🆔 NIK</label>
-                            <input type="text" class="form-control" name="nik" placeholder="Masukkan NIK" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="nama" class="form-label">👤 Nama Lengkap</label>
-                            <input type="text" class="form-control" name="nama" placeholder="Masukkan Nama Lengkap" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email" class="form-label">🔤 email</label>
-                            <input type="text" class="form-control" name="email" placeholder="Masukkan email" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="password" class="form-label">🔐 Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Masukkan Password" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="telp" class="form-label">📱 Telepon</label>
-                            <input type="number" class="form-control" name="telp" placeholder="Masukkan Nomor Telepon" required>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                        <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">
-                            <i class='bx bx-x'></i>
-                            Batal
-                        </button>
-                        <button type="submit" name="submit" class="btn-success-custom">
-                            <i class='bx bx-save'></i>
-                            Simpan
-                        </button>
-                    </div>
-                </form>
+    <!-- Advanced Header -->
+    <header class="main-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class='bx bx-menu'></i>
+            </button>
+            <h1 class="header-title">Data Pengaduan Masyarakat</h1>
+        </div>
+        
+        <div class="header-right">
+            <button class="notification-btn">
+                <i class='bx bx-bell'></i>
+            </button>
+            
+            <div class="user-profile">
+                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
+                <div class="user-info">
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Petugas'; ?></h6>
+                    <p>Petugas</p>
+                </div>
             </div>
         </div>
-    </div>
+    </header>
+
+    <main class="main-content">
+                <div class="content-card fade-in-up" style="max-width: 600px; margin: 0 auto;">
+            <h3 class="card-title">
+                <div class="card-icon">
+                    <i class='bx bx-edit'></i>
+                </div>
+                Edit Data Masyarakat
+            </h3>
+            
+            <form method="POST" action="switch_petugas.php?aksi=update-masyarakat" style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 16px;">
+                    
+                <input type="hidden" name="nik" class="form-control" value="<?= $data['nik'] ?>">
+                <div class="mb-3">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">👤 Nama</label>
+                    <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔤 email</label>
+                    <input type="text" name="email" class="form-control" value="<?= $data['email'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">📞 Telepon</label>
+                    <input type="text" name="telp" class="form-control" value="<?= $data['telp'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                    <a href="lihat_masyarakat.php" class="btn-secondary-custom" style="background: rgba(107, 114, 128, 0.8); border: none; border-radius: 12px; padding: 1rem 2rem; color: var(--text-white); font-weight: 600; text-decoration: none;">
+                        <i class='bx bx-x'></i> Batal
+                    </a>
+                    <button type="submit" class="btn-primary-custom">
+                        <i class='bx bx-save'></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
 
     <script>
         // Mobile menu toggle
@@ -788,12 +820,61 @@ switch ($aksi) {
             });
         }
     </script>
-
-<?php
+    
+    <?php
     break;
 }
 ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                                <i class='bx bx-user-plus'></i> Tambah Masyarakat
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form action="switch_petugas.php?aksi=tambah-masyarakat" method="post">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="nik" class="form-label">📋 NIK</label>
+                                    <input type="text" class="form-control" name="nik" placeholder="Isi NIK Anda" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="nama" class="form-label">👤 Nama Lengkap</label>
+                                    <input type="text" class="form-control" name="nama" placeholder="Isi Nama Lengkap Anda" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">🔤 email</label>
+                                    <input type="text" class="form-control" name="email" placeholder="Isi email Anda" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">🔐 Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Isi Password Anda" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="telp" class="form-label">📞 Telepon</label>
+                                    <input type="text" class="form-control" name="telp" placeholder="Isi Telepon Anda" required>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" name="submit" class="btn-primary-custom">
+                                    <i class='bx bx-save'></i> Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 </body>
 </html>
