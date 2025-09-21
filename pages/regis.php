@@ -506,6 +506,9 @@
                 <div class="card-body">
                     <h3 class="registration-title">REGISTRASI</h3>
                     <form action="cek_regis.php" method="post">
+
+                    <input type="hidden" class="form-control" name="id_masyarakat" id="id_masyarakat">
+
                         <div class="form-group">
                             <label for="nik">NIK:</label>
                             <input type="text" class="form-control" name="nik" id="nik" placeholder="Isi NIK Anda" required>

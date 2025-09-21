@@ -729,7 +729,7 @@ switch ($aksi) {
                         <tr>
                             <th>No</th>
                             <th>Tanggal Laporan</th>
-                            <th>NIK</th>
+                            <th>ID masyarakat</th>
                             <th>Isi Laporan</th>
                             <th>Status</th>
                             <th>Aksi</th>
@@ -744,7 +744,7 @@ switch ($aksi) {
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
-                            <td><?= $row['nik'] ?></td>
+                            <td><?= $row['id_masyarakat'] ?></td>
                             <td><?= substr($row['isi_laporan'], 0, 100) . '...' ?></td>
                             <td>
                                 <span class="status-badge status-<?= $row['status'] ?>">

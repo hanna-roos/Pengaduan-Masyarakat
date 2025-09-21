@@ -790,6 +790,7 @@ switch ($aksi) {
                             <th>No</th>
                             <th>Foto</th>
                             <th>Tanggal Laporan</th>
+                            <th>ID Masyarakat</th>
                             <th>NIK</th>
                             <th>Isi Laporan</th>
                             <th>Status</th>
@@ -811,6 +812,7 @@ switch ($aksi) {
                                 <?php endif; ?>
                             </td>
                             <td><?php echo date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
+                            <td><?php echo $row['id_masyarakat'] ?></td>
                             <td><?php echo $row['nik'] ?></td>
                             <td style="max-width: 300px;">
                                 <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo $row['isi_laporan'] ?>">

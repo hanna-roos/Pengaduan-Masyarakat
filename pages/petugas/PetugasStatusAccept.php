@@ -750,6 +750,7 @@ body::before {
         </h3>
 
         <div style="background: rgba(255, 255, 255, 0.95); padding: 1.5rem; border-radius: 16px; margin-bottom: 2rem;">
+            <p><strong>🆔 ID Masyarakat:</strong> <?= ($row['id_masyarakat'] ?? '-') ?></p>
             <p><strong>🆔 NIK:</strong> <?= ($row['nik'] ?? '-') ?></p>
             <p><strong>📝 Isi Laporan:</strong> <?= ($row['isi_laporan'] ?? '-') ?></p>
             <p><strong>📅 Tanggal:</strong> <?= ($row['tgl_pengaduan'] ?? '-') ?></p>

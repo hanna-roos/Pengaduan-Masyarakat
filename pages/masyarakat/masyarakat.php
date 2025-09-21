@@ -1,7 +1,7 @@
 <?php
 include "../koneksi/koneksi.php";
 session_start();
-if (!isset($_SESSION['email']) == 'email' && !isset($_SESSION['nik']) == 'nik'){
+if (!isset($_SESSION['email']) == 'email' && !isset($_SESSION['id_masyarakat']) == 'id_masyarakat'){
    // true
    echo "<script>
    alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
@@ -832,6 +832,26 @@ body::before {
             left: 100%;
         }
 
+        
+        .btn-secondary-custom {
+            background: rgba(239, 68, 68, 0.8);
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary-custom:hover {
+            background: rgba(239, 68, 68, 1);
+            color: var(--text-white);
+        }
+
         /* Responsive Design */
         @media (max-width: 1200px) {
             .content-grid {
@@ -1060,18 +1080,6 @@ switch ($aksi) {
             
             <div class="stat-card">
                 <div class="stat-icon">
-                    <i class='bx bx-check-circle'></i>
-                </div>
-                <div class="stat-title">Selesai</div>
-                <div class="stat-value">98</div>
-                <div class="stat-change positive">
-                    <i class='bx bx-trending-up'></i>
-                    <span>+8 bulan ini</span>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
                     <i class='bx bx-bar-chart'></i>
                 </div>
                 <div class="stat-title">Tingkat Penyelesaian</div>
@@ -1102,14 +1110,13 @@ switch ($aksi) {
                                 <th>NIK</th>
                                 <th>Isi Laporan</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             include '../koneksi/koneksi.php';
-                            $nik = $_SESSION['nik'];
-                            $query = mysqli_query($config, "SELECT * FROM pengaduan WHERE nik = '$nik' ORDER BY tgl_pengaduan DESC LIMIT 5");
+                            $id_masyarakat = $_SESSION['id_masyarakat'];
+                            $query = mysqli_query($config, "SELECT * FROM pengaduan WHERE id_masyarakat = '$id_masyarakat' ORDER BY tgl_pengaduan DESC LIMIT 5");
                             while ($row = mysqli_fetch_array($query)) {
                             ?>
                                 <tr>
@@ -1120,14 +1127,6 @@ switch ($aksi) {
                                         <span class="status-badge status-<?php echo $row['status'] ?>">
                                             <?php echo ucfirst($row['status']) ?>
                                         </span>
-                                    </td>
-                                    <td>
-                                        <a href="masyarakat.php?aksi=edit-pengaduan&id_pengaduan=<?php echo $row['id_pengaduan'] ?>" class="action-btn edit">
-                                            <i class='bx bx-edit-alt'></i>
-                                        </a>
-                                        <a href="switch_masyarakat.php?aksi=hapus&id_pengaduan=<?php echo $row['id_pengaduan'] ?>" class="action-btn delete">
-                                            <i class='bx bx-trash'></i>
-                                        </a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -1289,8 +1288,8 @@ switch ($aksi) {
 
     case 'tambah-pengaduan':
     include '../koneksi/koneksi.php';
-    $nik = $_SESSION['nik'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik = '$nik'");
+    $id_masyarakat = $_SESSION['id_masyarakat'];
+    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE id_masyarakat = '$id_masyarakat'");
     $row = mysqli_fetch_array($query);
         ?>
 
@@ -1456,11 +1455,8 @@ switch ($aksi) {
                         <label class="form-label">📅 Tanggal Pengaduan</label>
                         <input class="form-control" type="text" name="tgl_pengaduan" value="<?php echo date('Y/m/d'); ?>" readonly />
                     </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label">🆔 NIK</label>
-                        <input type="text" class="form-control" name="nik" value="<?= $row['nik']; ?>" readonly />
-                    </div>
+
+                        <input type="hidden" class="form-control" name="id_masyarakat" value="<?= $row['id_masyarakat']; ?>"/>
                     
                     <div class="form-group">
                         <label class="form-label">📝 Isi Laporan</label>
@@ -1507,7 +1503,7 @@ switch ($aksi) {
 
     case 'lihat-pengaduan':
     include '../koneksi/koneksi.php';
-    $nik = $_SESSION['nik'];
+    $id_masyarakat = $_SESSION['id_masyarakat'];
 ?>
 
 <body>
@@ -1594,18 +1590,6 @@ switch ($aksi) {
 
         <!-- Stats Grid -->
         <section class="stats-grid fade-in-up">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class='bx bx-file'></i>
-                </div>
-                <div class="stat-title">Total Pengaduan</div>
-                <div class="stat-value">
-                    <?php 
-                    $total = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik'"));
-                    echo $total;
-                    ?>
-                </div>
-            </div>
             
             <div class="stat-card">
                 <div class="stat-icon">
@@ -1614,7 +1598,7 @@ switch ($aksi) {
                 <div class="stat-title">Pending</div>
                 <div class="stat-value">
                     <?php 
-                    $pending = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='Menunggu'"));
+                    $pending = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE id_masyarakat='$id_masyarakat' AND status='pending'"));
                     echo $pending;
                     ?>
                 </div>
@@ -1627,7 +1611,7 @@ switch ($aksi) {
                 <div class="stat-title">Decline</div>
                 <div class="stat-value">
                     <?php 
-                    $decline = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='Tidak terima'"));
+                    $decline = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE id_masyarakat='$id_masyarakat' AND status='decline'"));
                     echo $decline;
                     ?>
                 </div>
@@ -1640,7 +1624,7 @@ switch ($aksi) {
                 <div class="stat-title">Accept</div>
                 <div class="stat-value">
                     <?php 
-                    $accept = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='Dicatat'"));
+                    $accept = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE id_masyarakat='$id_masyarakat' AND status='accept'"));
                     echo $accept;
                     ?>
                 </div>
@@ -1674,11 +1658,11 @@ switch ($aksi) {
                         <?php
                         $no = 1;
                         $query = mysqli_query($config, "
-                        SELECT pengaduan.id_pengaduan, pengaduan.tgl_pengaduan, pengaduan.nik, pengaduan.isi_laporan, pengaduan.foto, pengaduan.status, tanggapan.tanggapan, tanggapan.tgl_tanggapan
+                        SELECT pengaduan.id_pengaduan, pengaduan.tgl_pengaduan, pengaduan.id_masyarakat, pengaduan.isi_laporan, pengaduan.foto, pengaduan.status, tanggapan.tanggapan, tanggapan.tgl_tanggapan
                         FROM pengaduan
                         LEFT JOIN tanggapan 
                         ON tanggapan.id_pengaduan = pengaduan.id_pengaduan
-                        WHERE pengaduan.nik = '$nik'
+                        WHERE pengaduan.id_masyarakat = '$id_masyarakat'
                         ORDER BY pengaduan.tgl_pengaduan DESC
                         ");
                         while ($row = mysqli_fetch_array($query)) {
@@ -1686,7 +1670,7 @@ switch ($aksi) {
                             <tr>
                                 <td><?php echo $no++ ?></td>
                                 <td><?php echo date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
-                                <td><?php echo $row['nik'] ?></td>
+                                <td><?php echo $row['id_masyarakat'] ?></td>
                                 <td><?php echo substr($row['isi_laporan'], 0, 100) . '...' ?></td>
                                 <td>
                                     <?php if($row['foto']): ?>
@@ -1727,13 +1711,129 @@ switch ($aksi) {
         });
     </script>
 
+    <?php
+
+    break;
+
+        case 'edit-pengaduan':
+        include '../koneksi/koneksi.php';
+        $id_pengaduan = $_GET['id_pengaduan'];
+        $query = mysqli_query($config, "SELECT * FROM pengaduan WHERE id_pengaduan = '$id_pengaduan'");
+        $row = mysqli_fetch_array($query);
+    ?>
+     <!-- Advanced Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="masyarakat.php" class="logo">
+                <div class="logo-icon">
+                    <i class='bx bx-layer'></i>
+                </div>
+                <span>CITIZEN</span>
+            </a>
+        </div>
+        
+        <nav class="nav-menu">
+            <div class="nav-item">
+                <a href="masyarakat.php" class="nav-link">
+                    <i class='bx bx-grid-alt nav-icon'></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="masyarakat.php?aksi=tambah-pengaduan" class="nav-link">
+                    <i class='bx bx-message-square-detail nav-icon'></i>
+                    <span>Submit Pengaduan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="masyarakat.php?aksi=lihat-pengaduan" class="nav-link active">
+                    <i class='bx bx-bookmark nav-icon'></i>
+                    <span>Lihat Tanggapan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="masyarakat.php?aksi=edit-profile" class="nav-link">
+                    <i class='bx bx-user nav-icon'></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+            <div class="nav-item" style="margin-top: 2rem;">
+                <a href="../logout.php" class="nav-link">
+                    <i class='bx bx-log-out nav-icon'></i>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Advanced Header -->
+    <header class="main-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class='bx bx-menu'></i>
+            </button>
+            <div class="search-box">
+                
+                <input type="text" class="search-input" placeholder="Cari pengaduan, status, atau informasi...">
+            </div>
+        </div>
+        
+        <div class="header-right">
+            <button class="notification-btn">
+                <i class='bx bx-bell'></i>
+                <div class="notification-badge"></div>
+            </button>
+            
+            <div class="user-profile">
+                <img src="../../img/lol.png" alt="Profile" class="user-avatar">
+                <div class="user-info">
+                    <h6><?php echo $_SESSION['email'] ?></h6>
+                    <p>Masyarakat</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="form-container fade-in-up" style="max-width: 600px; margin: 0 auto;">
+            <h3 class="card-title">
+                <div class="card-icon">
+                    <i class='bx bx-edit'></i>
+                </div>
+                Edit Pengaduan untuk ID Pengaduan: <?= $row['id_pengaduan'] ?>
+            </h3>
+            
+            <form action="switch_masyarakat.php?aksi=edit-pengaduan" method="post">
+                <input type="hidden" name="id_pengaduan" value="<?= $row['id_pengaduan'] ?>">
+                
+                <div class="form-group">
+                    <label class="form-label">📝 Isi Pengaduan</label>
+                    <textarea class="form-control" name="isi_laporan" rows="6" placeholder="Tuliskan pengaduan yang telah diperbaiki..." required style="resize: vertical;"><?= $row['isi_laporan'] ?></textarea>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                    <a href="masyarakat.php?aksi=lihat-pengaduan" class="btn-secondary-custom">
+                        <i class='bx bx-x'></i>
+                        Batal
+                    </a>
+                    <button type="submit" class="btn-primary-custom">
+                        <i class='bx bx-save'></i>
+                        Simpan Pengaduan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+
 <?php
     break;
 
     case 'edit-profile':
     include '../koneksi/koneksi.php';
-    $nik = $_SESSION['nik'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik = '$nik'");
+    $id_masyarakat = $_SESSION['id_masyarakat'];
+    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE id_masyarakat = '$id_masyarakat'");
     $row = mysqli_fetch_assoc($query);
 ?>
 
@@ -1861,19 +1961,23 @@ switch ($aksi) {
                 </h3>
                 
                 <form action="switch_masyarakat.php?aksi=edit-profile" method="post">
-                    <input type="hidden" name="nik_lama" value="<?= $row['nik'] ?>">
+                    <input type="hidden" name="id_masyarakat" value="<?= $row['id_masyarakat'] ?>">
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label">🆔 NIK</label>
+                            <input type="text" class="form-control" name="nik" value="<?= $row['nik'] ?>" required>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label">👤 Nama Lengkap</label>
                             <input type="text" class="form-control" name="nama" value="<?= $row['nama'] ?>" required>
                         </div>
-
+                    </div>
                         <div class="form-group">
                             <label class="form-label">🔤 email</label>
                             <input type="text" class="form-control" name="email" value="<?= $row['email'] ?>" required>
                         </div>
-                    </div>
 
                     <div class="form-group">
                         <label class="form-label">📱 No. Telepon</label>
@@ -1881,7 +1985,7 @@ switch ($aksi) {
                     </div>
 
                     <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                        <a href="masyarakat.php" style="padding: 1rem 2rem; background: rgba(239, 68, 68, 0.1); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
+                        <a href="masyarakat.php?aksi=edit-profile" style="padding: 1rem 2rem; background: rgba(239, 68, 68, 0.1); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; text-decoration: none; font-weight: 600; transition: all 0.3s ease;">
                             <i class='bx bx-x'></i>
                             Batal
                         </a>

@@ -2,6 +2,7 @@
 session_start();
 include "koneksi/koneksi.php";
 
+$id_masyarakat      = $_POST['id_masyarakat'];
 $nik      = $_POST['nik'];
 $nama     = $_POST['nama'];
 $email    = $_POST['email'];

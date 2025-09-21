@@ -658,6 +658,7 @@ switch ($aksi) {
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>ID Masyarakat</th>
                             <th>NIK</th>
                             <th>Nama</th>
                             <th>email</th>
@@ -673,15 +674,16 @@ switch ($aksi) {
                         ?>
                         <tr>
                             <td><?php echo $no++ ?></td>
+                            <td><?php echo $row['id_masyarakat'] ?></td>
                             <td><?php echo $row['nik'] ?></td>
                             <td><?php echo $row['nama'] ?></td>
                             <td><?php echo $row['email'] ?></td>
                             <td><?php echo $row['password'] ?></td>
                             <td>
-                                <a href="lihat_masyarakat.php?aksi=edit-masyarakat&nik=<?= $row['nik'] ?>" class="btn-success-custom">
+                                <a href="lihat_masyarakat.php?aksi=edit-masyarakat&id_masyarakat=<?= $row['id_masyarakat'] ?>" class="btn-success-custom">
                                     <i class='bx bx-edit'></i> Edit
                                 </a>
-                                <a href="switch_petugas.php?aksi=hapus-masyarakat&nik=<?php echo $row['nik'] ?>" class="btn-danger-custom" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                <a href="switch_petugas.php?aksi=hapus-masyarakat&id_masyarakat=<?php echo $row['id_masyarakat'] ?>" class="btn-danger-custom" onclick="return confirm('Yakin ingin menghapus data ini?')">
                                     <i class='bx bx-trash'></i> Hapus
                                 </a>
                             </td>
@@ -698,8 +700,8 @@ switch ($aksi) {
     break;
 
     case 'edit-masyarakat':
-    $nik = $_GET['nik'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$nik'");
+    $id_masyarakat = $_GET['id_masyarakat'];
+    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE id_masyarakat='$id_masyarakat'");
     $data = mysqli_fetch_array($query);
 
     ?>
@@ -784,7 +786,11 @@ switch ($aksi) {
             
             <form method="POST" action="switch_petugas.php?aksi=update-masyarakat" style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 16px;">
                     
-                <input type="hidden" name="nik" class="form-control" value="<?= $data['nik'] ?>">
+                <input type="hidden" name="id_masyarakat" class="form-control" value="<?= $data['id_masyarakat'] ?>">
+                <div class="mb-3">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🆔 NIK</label>
+                    <input type="text" name="nik" class="form-control" value="<?= $data['nik'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                </div>
                 <div class="mb-3">
                     <label class="form-label" style="color: var(--text-black); font-weight: 600;">👤 Nama</label>
                     <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">

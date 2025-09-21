@@ -704,7 +704,7 @@ default:
             <div class="user-profile">
                 <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6>Petugas</h6>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Petugas'; ?></h6>
                     <p>Petugas</p>
                 </div>
             </div>
@@ -753,7 +753,7 @@ default:
                         <tr>
                             <th>No</th>
                             <th>Tanggal Laporan</th>
-                            <th>NIK</th>
+                            <th>ID Masyarakat</th>
                             <th>Isi Laporan</th>
                             <th>Foto</th>
                             <th>Status</th>
@@ -768,7 +768,7 @@ default:
                         <tr>
                             <td><?= $no++ ?></td>
                             <td><?= date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
-                            <td><?= $row['nik'] ?></td>
+                            <td><?= $row['id_masyarakat'] ?></td>
                             <td><?= substr($row['isi_laporan'], 0, 50) . '...' ?></td>
                             <td>
                                 <?php if($row['foto']): ?>
@@ -847,7 +847,7 @@ break;
 // ================= EDIT MASYARAKAT =================
 case 'edit-masyarakat':
     $id = $_GET['id'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$id'");
+    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE id_masyarakat='$id'");
     $data = mysqli_fetch_array($query);
 ?>
 
@@ -932,7 +932,12 @@ case 'edit-masyarakat':
             </h3>
             
             <form method="POST" action="switch_petugas.php?aksi=update-masyarakat">
-                <input type="hidden" name="nik" value="<?= $data['nik'] ?>">
+                <input type="hidden" name="id_masyarakat" value="<?= $data['id_masyarakat'] ?>">
+
+                <div class="form-group">
+                    <label class="form-label">🆔 NIK</label>
+                    <input type="text" name="nik" class="form-control" value="<?= $data['nik'] ?>" required>
+                </div>
                 
                 <div class="form-group">
                     <label class="form-label">👤 Nama</label>

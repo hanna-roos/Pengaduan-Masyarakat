@@ -4,58 +4,6 @@ include '../koneksi/koneksi.php';
 
 switch ($_GET['aksi']) {
 
-    // Tambah pengaduan
-    case 'tambah-pengaduan':
-        $tgl_pengaduan = $_POST['tgl_pengaduan'];
-        $nik           = $_POST['nik'];
-        $isi_laporan   = $_POST['isi_laporan'];
-        $foto          = $_POST['foto'];
-        
-        // Default status = menunggu
-        $status        = 'menunggu';
-
-        $sql = "INSERT INTO pengaduan (tgl_pengaduan, nik, isi_laporan, foto, status) 
-                VALUES ('$tgl_pengaduan', '$nik', '$isi_laporan', '$foto', '$status')";
-        mysqli_query($config, $sql) or die(mysqli_error($config));
-
-        echo "<script>
-                alert('Pengaduan berhasil dikirim');
-                window.location.href = 'masyarakat.php';
-              </script>";
-        break;
-
-    // Edit pengaduan
-    case 'edit-pengaduan':
-        $id_pengaduan = $_POST['id_pengaduan'];
-        $isi_laporan  = $_POST['isi_laporan'];
-
-        $query = mysqli_query($config, "UPDATE pengaduan 
-                                        SET isi_laporan = '$isi_laporan' 
-                                        WHERE id_pengaduan = '$id_pengaduan'");
-
-        if ($query) {
-            echo "<script>
-                    alert('Isi laporan berhasil diedit');
-                    window.location.href = 'masyarakat.php';
-                  </script>";
-        } else {
-            echo "<script>
-                    alert('Gagal mengedit isi laporan');
-                    window.location.href = 'masyarakat.php';
-                  </script>";
-        }
-        break;
-
-    // Hapus pengaduan
-    case 'hapus':
-        $id_pengaduan = $_GET['id_pengaduan'];
-        $query = mysqli_query($config, "DELETE FROM pengaduan WHERE id_pengaduan = '$id_pengaduan'");
-        echo "<script>
-                alert('Pengaduan berhasil dihapus');
-                window.location.href = 'lihat_pengaduan.php';
-              </script>";
-        break;
-
     // Edit tanggapan
     case 'tanggapan-edit':
         $id_pengaduan = $_POST['id_pengaduan'];
@@ -95,7 +43,7 @@ case 'status-decline':
 
     // Update pengaduan jadi Tidak Terima
     $sql = "UPDATE pengaduan 
-            SET status = 'Tidak Terima' 
+            SET status = 'decline' 
             WHERE id_pengaduan = '$id_pengaduan'";
     mysqli_query($config, $sql);
 
@@ -107,8 +55,8 @@ case 'status-decline':
     header("Location: lihat_pengaduan.php");
     break;
 
-
-    case 'update-masyarakat':
+case 'update-masyarakat':
+    $id_masyarakat = $_POST['id_masyarakat']; // tambahkan hidden input di form edit
     $nik   = $_POST['nik'];
     $nama  = $_POST['nama'];
     $email = $_POST['email'];
@@ -117,7 +65,7 @@ case 'status-decline':
     // cek apakah email sudah dipakai orang lain (selain dirinya sendiri)
     $query = mysqli_query($config, "SELECT * FROM masyarakat 
                                     WHERE email = '$email' 
-                                    AND nik != '$nik'");
+                                    AND id_masyarakat != '$id_masyarakat'");
     $cek = mysqli_num_rows($query);
 
     if ($cek > 0) {
@@ -127,10 +75,11 @@ case 'status-decline':
         </script>";
     } else {
         mysqli_query($config, "UPDATE masyarakat SET 
+                nik   = '$nik',
                 nama  = '$nama',
                 email = '$email',
                 telp  = '$telp'
-                WHERE nik = '$nik'");
+                WHERE id_masyarakat = '$id_masyarakat'");
         echo "<script>
         alert('Data berhasil diupdate!');
         window.location.href = 'lihat_masyarakat.php';
@@ -139,8 +88,10 @@ case 'status-decline':
     break;
 
 
+
 // TAMBAH masyarakat
 case 'tambah-masyarakat':
+    $id_masyarakat = $_POST ['id_masyarakat'];
     $nik      = $_POST['nik'];
     $nama     = $_POST['nama'];
     $email    = $_POST['email'];
@@ -169,20 +120,20 @@ case 'tambah-masyarakat':
 
 
 case 'hapus-masyarakat':
-    $nik = $_GET['nik'];
+    $id_masyarakat = $_GET['id_masyarakat'];
 
     // ambil semua id_pengaduan milik masyarakat ini
-    $res = mysqli_query($config, "SELECT id_pengaduan FROM pengaduan WHERE nik='$nik'");
+    $res = mysqli_query($config, "SELECT id_pengaduan FROM pengaduan WHERE id_masyarakat='$id_masyarakat'");
     while ($row = mysqli_fetch_assoc($res)) {
         $id_pengaduan = $row['id_pengaduan'];
         mysqli_query($config, "DELETE FROM tanggapan WHERE id_pengaduan = '$id_pengaduan'");
     }
 
     // hapus semua pengaduan milik masyarakat
-    mysqli_query($config, "DELETE FROM pengaduan WHERE nik = '$nik'");
+    mysqli_query($config, "DELETE FROM pengaduan WHERE id_masyarakat='$id_masyarakat'");
 
     // hapus data masyarakat
-    mysqli_query($config, "DELETE FROM masyarakat WHERE nik = '$nik'");
+    mysqli_query($config, "DELETE FROM masyarakat WHERE id_masyarakat='$id_masyarakat'");
 
     echo "<script>
         alert('Pengguna berhasil dihapus');

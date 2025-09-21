@@ -716,7 +716,6 @@ switch ($aksi) {
         $row = mysqli_fetch_array($query);
 ?>
 
-<body>
     <!-- Advanced Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">

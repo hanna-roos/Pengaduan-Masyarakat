@@ -3,18 +3,18 @@ include '../koneksi/koneksi.php';
 switch ($_GET['aksi']) {
 case 'tambah-pengaduan':
    $tgl_pengaduan       = $_POST['tgl_pengaduan'];
-   $nik                 = $_POST['nik'];  // ambil dari form
+   $id_masyarakat                 = $_POST['id_masyarakat'];  // ambil dari form
    $isi_laporan         = $_POST['isi_laporan'];
    $foto                = $_POST['foto'];
    $status              = $_POST['status'];
 
-   $sql = "INSERT INTO pengaduan (tgl_pengaduan, nik, isi_laporan, foto, status) 
-           VALUES ('$tgl_pengaduan', '$nik', '$isi_laporan', '$foto', 'Menunggu ')";
+   $sql = "INSERT INTO pengaduan (tgl_pengaduan, id_masyarakat, isi_laporan, foto, status) 
+           VALUES ('$tgl_pengaduan', '$id_masyarakat', '$isi_laporan', '$foto', 'pending')";
    mysqli_query($config, $sql) or die(mysqli_error($config));
 
    echo "<script>
    alert('Pengaduan berhasil dikirim');
-   window.location.href = 'masyarakat.php';
+   window.location.href = 'masyarakat.php?aksi-tambah-pengaduan';
    </script>";
    break;
    
@@ -29,54 +29,66 @@ case 'edit-pengaduan':
     if ($query) {
         echo "<script>
         alert('Isi laporan berhasil diedit');
-        window.location.href = 'masyarakat.php';
+        window.location.href = 'masyarakat.php?aksi=lihat-pengaduan';
         </script>";
     } else {
         echo "<script>
         alert('Gagal mengedit isi laporan');
-        window.location.href = 'masyarakat.php';
+        window.location.href = 'masyarakat.php?aksi=lihat-pengaduan';
         </script>";
     }
     break;
 
 
 
-      case 'hapus':
-      $id_pengaduan = $_GET['id_pengaduan'];
-      $query = mysqli_query($config, "DELETE FROM pengaduan WHERE id_pengaduan = '$id_pengaduan'");
-      echo "<script>
-         alert('Pengaduan berhasil dihapus');
-         window.location.href = 'masyarakat.php';
-      </script>";
-      break;
+case 'hapus':
+    $id_pengaduan = $_GET['id_pengaduan'];
 
-    case 'edit-profile':
-    $nik_lama = $_POST['nik_lama']; // NIK asli dari database (hidden input)
+    // hapus dulu tanggapan yang terkait
+    mysqli_query($config, "DELETE FROM tanggapan WHERE id_pengaduan = '$id_pengaduan'");
+
+    // baru hapus pengaduan
+    mysqli_query($config, "DELETE FROM pengaduan WHERE id_pengaduan = '$id_pengaduan'");
+
+    echo "<script>
+        alert('Pengaduan berhasil dihapus');
+        window.location.href = 'masyarakat.php';
+    </script>";
+    break;
+
+case 'edit-profile':
+    $id_masyarakat = $_POST['id_masyarakat'];
+    $nik      = $_POST['nik'];
     $nama     = $_POST['nama'];
-    $email = $_POST['email'];
+    $email    = $_POST['email'];
     $telp     = $_POST['telp'];
 
-    // Cek apakah NIK baru sudah dipakai user lain (selain dirinya sendiri)
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik = '$nik_baru' AND nik != '$nik_lama'");
-    if(mysqli_num_rows($query) > 0){
-        echo "<script>
-        alert('NIK $nik_baru sudah dipakai orang lain');
-        window.location.href = '../masyarakat/masyarakat.php?aksi=edit-profile';
-        </script>";
-    } else {
-        // Update data
-        mysqli_query($config, "UPDATE masyarakat SET 
-            nama = '$nama',
-            email = '$email',
-            telp = '$telp'
-            WHERE nik = '$nik_lama'");
+$query = mysqli_query($config, "SELECT * FROM masyarakat 
+                                WHERE (nik = '$nik' OR email = '$email') 
+                                AND id_masyarakat != '$id_masyarakat'");
+$cek = mysqli_num_rows($query);
 
-        echo "<script>
-        alert('Data berhasil di edit');
-        window.location.href = '../masyarakat/masyarakat.php?aksi=edit-profile';
-        </script>";
-    }
-break;
+if ($cek > 0) {
+    echo "<script>
+    alert('NIK atau Email sudah ada yang menggunakan, silahkan gunakan yang berbeda');
+    window.location.href = '../masyarakat/masyarakat.php?aksi=edit-profile';
+    </script>";
+} else {
+    mysqli_query($config, "UPDATE masyarakat SET 
+        nik = '$nik',
+        nama = '$nama',
+        email = '$email',
+        telp = '$telp'
+        WHERE id_masyarakat = '$id_masyarakat'");
+
+    echo "<script>
+    alert('Profile berhasil di edit, tolong relogin jika mengubah email');
+    window.location.href = '../masyarakat/masyarakat.php?aksi=edit-profile';
+    </script>";
+}
+
+
+    break;
       
    }
    ?>

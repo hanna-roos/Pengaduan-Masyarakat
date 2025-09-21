@@ -3,7 +3,7 @@ session_start();
 include 'koneksi/koneksi.php';
 
 $email     = $_POST['email'];
-$password  = md5($_POST['password']); // ⚠️ later change to password_hash
+$password  = md5($_POST['password']); 
 $level     = $_POST['level'] ?? '';
 
 if ($level == "masyarakat" && empty($_POST['nik'])) {
@@ -45,8 +45,8 @@ if ($cek > 0) {
     $data = mysqli_fetch_assoc($result);
 
     if ($level == 'masyarakat') {
-        $_SESSION['email'] = $data['email'];
-        $_SESSION['nik']   = $data['nik'];
+        $_SESSION['email']      = $data['email'];
+        $_SESSION['id_masyarakat'] = $data['id_masyarakat'];
         $_SESSION['level'] = 'masyarakat';
         echo "<script>
             alert('Anda berhasil login sebagai masyarakat');
