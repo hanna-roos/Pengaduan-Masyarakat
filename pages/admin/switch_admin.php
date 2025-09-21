@@ -165,118 +165,153 @@ case 'tanggapan-edit':
       </script>";
       break;
 
-    //masyarakat
-    case 'update-masyarakat':
-    $nik = $_POST['nik'];
-    $nama = $_POST['nama'];
+   // UPDATE masyarakat
+case 'update-masyarakat':
+    $nik   = $_POST['nik'];
+    $nama  = $_POST['nama'];
     $email = $_POST['email'];
-    $password = $_POST['password'];
+    $telp  = $_POST['telp'];
 
-    $query = mysqli_query($config, "UPDATE masyarakat SET 
-        nama='$nama', 
-        email='$email', 
-        password='$password' 
-        WHERE nik='$nik'");
+    // cek apakah email sudah dipakai orang lain (selain dirinya sendiri)
+    $query = mysqli_query($config, "SELECT * FROM masyarakat 
+                                    WHERE email = '$email' 
+                                    AND nik != '$nik'");
+    $cek = mysqli_num_rows($query);
 
-    if ($query) {
-        echo "<script>alert('Data berhasil diupdate'); window.location.href='lihat_masyarakat.php?';</script>";
+    if ($cek > 0) {
+        echo "<script>
+        alert('Email $email sudah ada yang menggunakan, silahkan gunakan email yang berbeda');
+        window.location.href = 'lihat_masyarakat.php';
+        </script>";
     } else {
-        echo "<script>alert('Gagal update data'); window.location.href='lihat_masyarakat.php';</script>";
+        mysqli_query($config, "UPDATE masyarakat SET 
+                nama  = '$nama',
+                email = '$email',
+                telp  = '$telp'
+                WHERE nik = '$nik'");
+        echo "<script>
+        alert('Data berhasil diupdate!');
+        window.location.href = 'lihat_masyarakat.php';
+        </script>";
     }
     break;
 
-    case 'tambah-masyarakat':
-        
-$nik      = $_POST['nik'];
-$nama     = $_POST['nama'];
-$email = $_POST['email'];
-$password = md5($_POST['password']);
-$telp     = $_POST['telp'];
 
-// mencari semua data email 
-$query = mysqli_query($config, "SELECT * from masyarakat WHERE nik = '$nik'");
-// menghitung jumlah baris query
-$cek = mysqli_num_rows($query);
+// TAMBAH masyarakat
+case 'tambah-masyarakat':
+    $nik      = $_POST['nik'];
+    $nama     = $_POST['nama'];
+    $email    = $_POST['email'];
+    $password = md5($_POST['password']);
+    $telp     = $_POST['telp'];
+
+    // cek apakah nik atau email sudah dipakai
+    $query = mysqli_query($config, "SELECT * FROM masyarakat 
+                                    WHERE nik = '$nik' OR email = '$email'");
+    $cek = mysqli_num_rows($query);
+
+    if ($cek > 0) {
+        echo "<script>
+        alert('NIK atau Email sudah ada yang menggunakan, silahkan gunakan yang berbeda');
+        window.location.href = 'lihat_masyarakat.php';
+        </script>";
+    } else {
+        mysqli_query($config, "INSERT INTO masyarakat (nik, nama, email, password, telp) 
+                               VALUES('$nik', '$nama', '$email', '$password', '$telp')");
+        echo "<script>
+        alert('Data berhasil ditambahkan!');
+        window.location.href = 'lihat_masyarakat.php';
+        </script>";
+    }
+    break;
 
 
-if($cek > 0){
-   echo "<script>
-   alert('NIK $nik sudah ada yang menggunakan, Silahkan menggunakan NIK yang berbeda');
-   window.location.href = 'lihat_masyarakat.php';
-   </script>";
-   // kalo ada data dengan email tersebut maka akan disuru registrasi ulang
-} else {
-   mysqli_query($config, "INSERT INTO masyarakat VALUES('$nik', '$nama', '$email', '$password', '$telp')");
-   echo "<script>
-   alert('Data berhasil ditambahkan');
-   window.location.href = 'lihat_masyarakat.php';
-   </script>";
-   // kalo email nya gak ada di database maka registrasi berhasil
-}
+case 'hapus-masyarakat':
+    $nik = $_GET['nik'];
 
-      case 'hapus-masyarakat':
-      $nik = $_GET['nik'];
-      $query = mysqli_query($config, "DELETE FROM pengaduan WHERE nik = '$nik'");
-      $acc = mysqli_query($config, "DELETE FROM masyarakat WHERE nik = '$nik'");
+    // ambil semua id_pengaduan milik masyarakat ini
+    $res = mysqli_query($config, "SELECT id_pengaduan FROM pengaduan WHERE nik='$nik'");
+    while ($row = mysqli_fetch_assoc($res)) {
+        $id_pengaduan = $row['id_pengaduan'];
+        mysqli_query($config, "DELETE FROM tanggapan WHERE id_pengaduan = '$id_pengaduan'");
+    }
 
-      echo "<script>
-         alert('Pengguna berhasil dihapus');
-         window.location.href = 'lihat_masyarakat.php';
-      </script>";
-      break;
+    // hapus semua pengaduan milik masyarakat
+    mysqli_query($config, "DELETE FROM pengaduan WHERE nik = '$nik'");
+
+    // hapus data masyarakat
+    mysqli_query($config, "DELETE FROM masyarakat WHERE nik = '$nik'");
+
+    echo "<script>
+        alert('Pengguna berhasil dihapus');
+        window.location.href = 'lihat_masyarakat.php';
+    </script>";
+    break;
+
 
       //petugas
-    case 'update-petugas':
-    $id_petugas = $_POST['id_petugas'];
+case 'update-petugas':
+    $id_petugas   = $_POST['id_petugas'];
     $nama_petugas = $_POST['nama_petugas'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-     $telp = $_POST['telp'];
-     $level = $_POST['level'];
+    $email        = $_POST['email'];
+    $telp         = $_POST['telp'];
+    $level        = $_POST['level'];
 
-    $query = mysqli_query($config, "UPDATE petugas SET 
-        nama_petugas='$nama_petugas', 
-        email='$email', 
-        password ='$password',
-        telp='$telp', level='$level' 
-        WHERE id_petugas='$id_petugas'");
+    // cek apakah email sudah dipakai oleh orang lain
+    $query = mysqli_query($config, "SELECT * FROM petugas 
+                                    WHERE email = '$email' 
+                                    AND id_petugas != '$id_petugas'");
+    $cek = mysqli_num_rows($query);
 
-    if ($query) {
-        echo "<script>alert('Data berhasil diupdate'); window.location.href='lihat_petugas.php?';</script>";
+    if ($cek > 0) {
+        echo "<script>
+        alert('Email $email sudah ada yang menggunakan, silahkan gunakan email yang berbeda');
+        window.location.href = 'lihat_petugas.php';
+        </script>";
     } else {
-        echo "<script>alert('Gagal update data'); window.location.href='lihat_petugas.php';</script>";
+        mysqli_query($config, "UPDATE petugas SET 
+                nama_petugas = '$nama_petugas',
+                email        = '$email',
+                telp         = '$telp',
+                level        = '$level'
+                WHERE id_petugas = '$id_petugas'");
+        echo "<script>
+        alert('Data berhasil diupdate!');
+        window.location.href = 'lihat_petugas.php';
+        </script>";
     }
     break;
+
 
     case 'tambah-petugas':
         
-$id_petugas      = $_POST['id_petugas'];
-$nama_petugas     = $_POST['nama_petugas'];
-$email = $_POST['email'];
-$password = md5($_POST['password']);
-$telp     = $_POST['telp'];
-$level    = $_POST['level'];
+    $id_petugas      = $_POST['id_petugas'];
+    $nama_petugas     = $_POST['nama_petugas'];
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+    $telp     = $_POST['telp'];
+    $level    = $_POST['level'];
 
-// mencari semua data email 
-$query = mysqli_query($config, "SELECT * from petugas WHERE id_petugas = '$id_petugas'");
-// menghitung jumlah baris query
-$cek = mysqli_num_rows($query);
+    // cek apakah email sudah dipakai oleh orang lain
+    $query = mysqli_query($config, "SELECT * FROM petugas 
+                                    WHERE email = '$email' 
+                                    AND id_petugas != '$id_petugas'");
+    $cek = mysqli_num_rows($query);
 
+    if ($cek > 0) {
+        echo "<script>
+        alert('Email $email sudah ada yang menggunakan, silahkan gunakan email yang berbeda');
+        window.location.href = 'lihat_petugas.php';
+        </script>";
+    } else {
+        mysqli_query($config, "INSERT INTO petugas VALUES('$id_petugas', '$nama_petugas', '$email', '$password', '$telp', '$level')");
+        echo "<script>
+        alert('Data berhasil ditambah!');
+        window.location.href = 'lihat_petugas.php';
+        </script>";
+    }
 
-if($cek > 0){
-   echo "<script>
-   alert('email $email sudah ada yang menggunakan, Silahkan menggunakan email yang berbeda');
-   window.location.href = 'lihat_petugas.php';
-   </script>";
-   // kalo ada data dengan email tersebut maka akan disuru registrasi ulang
-} else {
-   mysqli_query($config, "INSERT INTO petugas VALUES('$id_petugas', '$nama_petugas', '$email', '$password', '$telp', '$level')");
-   echo "<script>
-   alert('Data berhasil ditambahkan');
-   window.location.href = 'lihat_petugas.php';
-   </script>";
-   // kalo email nya gak ada di database maka registrasi berhasil
-}
+    break;
 
       case 'hapus-petugas':
       $id_petugas = $_GET['id_petugas'];

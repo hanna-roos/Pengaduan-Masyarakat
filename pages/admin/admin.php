@@ -1,12 +1,13 @@
 <?php
 include "../koneksi/koneksi.php";
 session_start();
-if (!isset($_SESSION['email']) == 'email' && !isset($_SESSION['id_petugas']) == 'id_petugas'){
-   // true
-   echo "<script>
+// Periksa apakah sesi tersedia
+if (!isset($_SESSION['id_petugas']) && !isset($_SESSION['email'])) {
+    echo "<script>
    alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
    window.location.href = '../index.php';
    </script>";
+    exit();
 }
 ?>
 
@@ -653,68 +654,6 @@ $pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total F
 $decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
 
 switch ($aksi) {
-    case 'edit-masyarakat':
-    $id = $_GET['id'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$id'");
-    $data = mysqli_fetch_array($query);
-?>
-
-<body>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="content-card fade-in-up" style="max-width: 600px; margin: 0 auto;">
-            <h3 class="card-title">
-                <div class="card-icon">
-                    <i class='bx bx-edit'></i>
-                </div>
-                Edit Data Masyarakat
-            </h3>
-            
-            <form method="POST" action="switch_admin.php?aksi=update-masyarakat" style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 16px;">
-                <input type="hidden" name="nik" value="<?= $data['nik'] ?>">
-
-                <div class="mb-3">
-                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">👤 Nama</label>
-                    <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔤 email</label>
-                    <input type="text" name="email" class="form-control" value="<?= $data['email'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔐 Password</label>
-                    <input type="text" name="password" class="form-control" value="<?= $data['password'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
-                </div>
-                
-                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                    <a href="lihat_masyarakat.php" class="btn-secondary-custom" style="background: rgba(107, 114, 128, 0.8); border: none; border-radius: 12px; padding: 1rem 2rem; color: var(--text-white); font-weight: 600; text-decoration: none;">
-                        <i class='bx bx-x'></i> Batal
-                    </a>
-                    <button type="submit" class="btn-primary-custom">
-                        <i class='bx bx-save'></i> Simpan
-                    </button>
-                </div>
-            </form>
-        </div>
-    </main>
-
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-            });
-        }
-    </script>
-
-
-<?php
-    break;
-
     default:
 ?> 
 
@@ -793,7 +732,7 @@ switch ($aksi) {
             <div class="user-profile">
                 <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6>Admin</h6>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Admin'; ?></h6>
                     <p>Administrator</p>
                 </div>
             </div>

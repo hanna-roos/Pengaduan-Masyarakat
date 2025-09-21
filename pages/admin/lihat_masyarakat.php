@@ -1,3 +1,16 @@
+<?php
+include "../koneksi/koneksi.php";
+session_start();
+// Periksa apakah sesi tersedia
+if (!isset($_SESSION['id_petugas']) && !isset($_SESSION['email'])) {
+    echo "<script>
+   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
+   window.location.href = '../index.php';
+   </script>";
+    exit();
+}
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -272,6 +285,8 @@ body::before {
             color: var(--text-black);
             opacity: 0.7;
         }
+
+
 
         /* Main Content */
         .main-content {
@@ -643,7 +658,200 @@ switch ($aksi) {
                 <i class='bx bx-plus' style="margin-top:2.8px;"></i> Tambah Masyarakat
             </button>
 
-            <!-- Modal -->
+            <h3 class="card-title">
+                <div class="card-icon">
+                    <i class='bx bx-group'></i>
+                </div>
+                Data Masyarakat Terdaftar
+            </h3>
+            
+            <div class="table-responsive">
+                <table class="advanced-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>NIK</th>
+                            <th>Nama</th>
+                            <th>email</th>
+                            <th>Password</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $query = mysqli_query($config, "SELECT * FROM masyarakat");
+                        $no = 1;
+                        while ($row = mysqli_fetch_array($query)) {
+                        ?>
+                        <tr>
+                            <td><?php echo $no++ ?></td>
+                            <td><?php echo $row['nik'] ?></td>
+                            <td><?php echo $row['nama'] ?></td>
+                            <td><?php echo $row['email'] ?></td>
+                            <td><?php echo $row['password'] ?></td>
+                            <td>
+                                <a href="lihat_masyarakat.php?aksi=edit-masyarakat&nik=<?= $row['nik'] ?>" class="btn-success-custom">
+                                    <i class='bx bx-edit'></i> Edit
+                                </a>
+                                <a href="switch_admin.php?aksi=hapus-masyarakat&nik=<?php echo $row['nik'] ?>" class="btn-danger-custom" onclick="return confirm('Yakin ingin menghapus data ini?')">
+                                    <i class='bx bx-trash'></i> Hapus
+                                </a>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+    </main>
+
+    <?php
+    break;
+
+    case 'edit-masyarakat':
+    $nik = $_GET['nik'];
+    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$nik'");
+    $data = mysqli_fetch_array($query);
+
+    ?>
+
+     <!-- Advanced Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <a href="admin.php" class="logo">
+                <div class="logo-icon">
+                    <i class='bx bx-layer'></i>
+                </div>
+                <span>CITIZEN</span>
+            </a>
+        </div>
+        
+        <nav class="nav-menu">
+            <div class="nav-item">
+                <a href="admin.php" class="nav-link">
+                    <i class='bx bx-grid-alt nav-icon'></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
+                    <i class='bx bx-message-square-detail nav-icon'></i>
+                    <span>Lihat Pengaduan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_tanggapan.php" class="nav-link">
+                    <i class='bx bx-bookmark nav-icon'></i>
+                    <span>Lihat Tanggapan</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_petugas.php?aksi=lihat-petugas" class="nav-link">
+                    <i class='bx bx-user nav-icon'></i>
+                    <span>Lihat Petugas</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav-link active">
+                    <i class='bx bx-user nav-icon'></i>
+                    <span>Lihat Masyarakat</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="lihat_report.php" class="nav-link">
+                    <i class='bx bx-file nav-icon'></i>
+                    <span>Laporan</span>
+                </a>
+            </div>
+            <div class="nav-item" style="margin-top: 2rem;">
+                <a href="../logout.php" class="nav-link">
+                    <i class='bx bx-log-out nav-icon'></i>
+                    <span>Log Out</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Advanced Header -->
+    <header class="main-header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle">
+                <i class='bx bx-menu'></i>
+            </button>
+            <h1 class="header-title">Data Masyarakat</h1>
+        </div>
+        
+        <div class="header-right">
+            <button class="notification-btn">
+                <i class='bx bx-bell'></i>
+            </button>
+            
+            <div class="user-profile">
+                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
+                <div class="user-info">
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Admin'; ?></h6>
+                    <p>Administrator</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+                <div class="content-card fade-in-up" style="max-width: 600px; margin: 0 auto;">
+            <h3 class="card-title">
+                <div class="card-icon">
+                    <i class='bx bx-edit'></i>
+                </div>
+                Edit Data Masyarakat
+            </h3>
+            
+            <form method="POST" action="switch_admin.php?aksi=update-masyarakat" style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 16px;">
+                    
+                <input type="hidden" name="nik" class="form-control" value="<?= $data['nik'] ?>">
+                <div class="mb-3">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">👤 Nama</label>
+                    <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔤 email</label>
+                    <input type="text" name="email" class="form-control" value="<?= $data['email'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">📞 Telepon</label>
+                    <input type="text" name="telp" class="form-control" value="<?= $data['telp'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+                    <a href="lihat_masyarakat.php" class="btn-secondary-custom" style="background: rgba(107, 114, 128, 0.8); border: none; border-radius: 12px; padding: 1rem 2rem; color: var(--text-white); font-weight: 600; text-decoration: none;">
+                        <i class='bx bx-x'></i> Batal
+                    </a>
+                    <button type="submit" class="btn-primary-custom">
+                        <i class='bx bx-save'></i> Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+            });
+        }
+    </script>
+    
+    <?php
+    break;
+}
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Modal -->
             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -678,7 +886,7 @@ switch ($aksi) {
 
                                 <div class="mb-3">
                                     <label for="telp" class="form-label">📞 Telepon</label>
-                                    <input type="number" class="form-control" name="telp" placeholder="Isi Telepon Anda" required>
+                                    <input type="text" class="form-control" name="telp" placeholder="Isi Telepon Anda" required>
                                 </div>
                             </div>
 
@@ -692,71 +900,5 @@ switch ($aksi) {
                     </div>
                 </div>
             </div>
-
-            <h3 class="card-title">
-                <div class="card-icon">
-                    <i class='bx bx-group'></i>
-                </div>
-                Data Masyarakat Terdaftar
-            </h3>
-            
-            <div class="table-responsive">
-                <table class="advanced-table">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>NIK</th>
-                            <th>Nama</th>
-                            <th>email</th>
-                            <th>Password</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $query = mysqli_query($config, "SELECT * FROM masyarakat");
-                        $no = 1;
-                        while ($row = mysqli_fetch_array($query)) {
-                        ?>
-                        <tr>
-                            <td><?php echo $no++ ?></td>
-                            <td><?php echo $row['nik'] ?></td>
-                            <td><?php echo $row['nama'] ?></td>
-                            <td><?php echo $row['email'] ?></td>
-                            <td><?php echo $row['password'] ?></td>
-                            <td>
-                                <a href="admin.php?aksi=edit-masyarakat&id=<?= $row['nik'] ?>" class="btn-success-custom">
-                                    <i class='bx bx-edit'></i> Edit
-                                </a>
-                                <a href="switch_admin.php?aksi=hapus-masyarakat&nik=<?php echo $row['nik'] ?>" class="btn-danger-custom" onclick="return confirm('Yakin ingin menghapus data ini?')">
-                                    <i class='bx bx-trash'></i> Hapus
-                                </a>
-                            </td>
-                        </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
-
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-            });
-        }
-    </script>
-    
-    <?php
-    break;
-}
-?>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
