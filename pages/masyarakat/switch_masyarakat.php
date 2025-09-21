@@ -9,7 +9,7 @@ case 'tambah-pengaduan':
    $status              = $_POST['status'];
 
    $sql = "INSERT INTO pengaduan (tgl_pengaduan, nik, isi_laporan, foto, status) 
-           VALUES ('$tgl_pengaduan', '$nik', '$isi_laporan', '$foto', '$status')";
+           VALUES ('$tgl_pengaduan', '$nik', '$isi_laporan', '$foto', 'Menunggu ')";
    mysqli_query($config, $sql) or die(mysqli_error($config));
 
    echo "<script>

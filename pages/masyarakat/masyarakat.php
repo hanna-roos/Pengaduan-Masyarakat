@@ -1614,7 +1614,7 @@ switch ($aksi) {
                 <div class="stat-title">Pending</div>
                 <div class="stat-value">
                     <?php 
-                    $pending = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='pending'"));
+                    $pending = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='Menunggu'"));
                     echo $pending;
                     ?>
                 </div>
@@ -1627,7 +1627,7 @@ switch ($aksi) {
                 <div class="stat-title">Decline</div>
                 <div class="stat-value">
                     <?php 
-                    $decline = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='decline'"));
+                    $decline = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='Tidak terima'"));
                     echo $decline;
                     ?>
                 </div>
@@ -1640,7 +1640,7 @@ switch ($aksi) {
                 <div class="stat-title">Accept</div>
                 <div class="stat-value">
                     <?php 
-                    $accept = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='accept'"));
+                    $accept = mysqli_num_rows(mysqli_query($config, "SELECT * FROM pengaduan WHERE nik='$nik' AND status='Dicatat'"));
                     echo $accept;
                     ?>
                 </div>
