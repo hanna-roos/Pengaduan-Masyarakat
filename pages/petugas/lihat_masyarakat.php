@@ -1,24 +1,17 @@
-<?php
-include "../koneksi/koneksi.php";
-session_start();
-if (!isset($_SESSION['email']) == 'email' && !isset($_SESSION['id_petugas']) == 'id_petugas'){
-   // true
-   echo "<script>
-   alert('Anda belum Login, Silahkan Login Terlebih Dahulu!');
-   window.location.href = '../index.php';
-   </script>";
-}
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Dashboard</title>
+    <title>Petugas Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+    UPLOADCARE_PUBLIC_KEY = '38882543888abfb41547';
+    </script>
+    <script src="https://ucarecdn.com/libs/widget/3.x/uploadcare.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@uploadcare/file-uploader@1/web/uc-file-uploader-regular.min.css">
     
     <style>
         :root {
@@ -62,7 +55,6 @@ body::before {
     backdrop-filter: blur(px); 
     z-index: -1;
 }
-
 
         /* Advanced Sidebar */
         .sidebar {
@@ -320,59 +312,6 @@ body::before {
             margin-bottom: 2rem;
         }
 
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-heavy);
-        }
-
-        .stat-icon {
-            width: 60px;
-            height: 60px;
-            background: var(--secondary-gradient);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--text-white);
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-light);
-        }
-
-        .stat-title {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-white);
-            opacity: 0.8;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--text-white);
-            margin-bottom: 1rem;
-        }
-
         /* Content Card */
         .content-card {
             background: var(--glass-bg);
@@ -448,30 +387,6 @@ body::before {
             background: rgba(10, 36, 114, 0.05);
         }
 
-        .status-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .status-pending {
-            background: rgba(251, 191, 36, 0.2);
-            color: #d97706;
-        }
-
-        .status-accept {
-            background: rgba(16, 185, 129, 0.2);
-            color: #059669;
-        }
-
-        .status-decline {
-            background: rgba(239, 68, 68, 0.2);
-            color: #dc2626;
-        }
-
-        /* Button Styling */
         .btn-primary-custom {
             background: var(--primary-gradient);
             border: none;
@@ -486,7 +401,6 @@ body::before {
             overflow: hidden;
             text-decoration: none;
             display: inline-block;
-            margin: 0.25rem;
         }
 
         .btn-primary-custom:hover {
@@ -495,8 +409,8 @@ body::before {
             color: var(--text-white);
         }
 
-        .btn-success-custom {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        .btn-secondary-custom {
+            background: rgba(239, 68, 68, 0.8);
             border: none;
             border-radius: 12px;
             padding: 0.75rem 1.5rem;
@@ -507,62 +421,83 @@ body::before {
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
-            margin: 0.25rem;
+        }
+
+        .btn-secondary-custom:hover {
+            background: rgba(239, 68, 68, 1);
+            color: var(--text-white);
+        }
+
+        .btn-success-custom {
+            background: rgba(16, 185, 129, 0.8);
+            border: none;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .btn-success-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-light);
+            background: rgba(16, 185, 129, 1);
             color: var(--text-white);
         }
 
-        .btn-warning-custom {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
+        /* Modal Styling */
+        .modal-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+        }
+
+        .modal-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--primary-gradient);
             color: var(--text-white);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-title {
+            color: var(--text-white);
+        }
+
+        .btn-close {
+            filter: invert(1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
             font-weight: 600;
+            color: var(--title);
             font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin: 0.25rem;
         }
 
-        .btn-warning-custom:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-light);
-            color: var(--text-white);
-        }
-
-        .btn-danger-custom {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            border: none;
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-            color: var(--text-white);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            font-size: 0.95rem;
             transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin: 0.25rem;
         }
 
-        .btn-danger-custom:hover {
+        .form-control:focus {
+            outline: none;
+            border-color: var(--bg-sidebar);
+            box-shadow: 0 0 0 3px rgba(10, 36, 114, 0.1);
             transform: translateY(-2px);
-            box-shadow: var(--shadow-light);
-            color: var(--text-white);
-        }
-
-        /* Action buttons container */
-        .action-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
         }
 
         /* Responsive Design */
@@ -585,10 +520,6 @@ body::before {
             
             .menu-toggle {
                 display: block;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
             }
             
             .hero-title {
@@ -643,86 +574,20 @@ body::before {
 </head>
 
 <?php 
+session_start();
 include "../koneksi/koneksi.php";
 
 $aksi = isset($_GET['aksi']) ? $_GET['aksi'] : '';
 
-// hitung accepted
-$accepted = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='accept'"))['total'];
-$pending  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='pending'"))['total'];
-$decline  = mysqli_fetch_array(mysqli_query($config, "SELECT COUNT(*) AS total FROM pengaduan WHERE status='decline'"))['total'];
-
 switch ($aksi) {
-    case 'edit-masyarakat':
-    $id = $_GET['id'];
-    $query = mysqli_query($config, "SELECT * FROM masyarakat WHERE nik='$id'");
-    $data = mysqli_fetch_array($query);
-?>
-
-<body>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="content-card fade-in-up" style="max-width: 600px; margin: 0 auto;">
-            <h3 class="card-title">
-                <div class="card-icon">
-                    <i class='bx bx-edit'></i>
-                </div>
-                Edit Data Masyarakat
-            </h3>
-            
-            <form method="POST" action="switch_admin.php?aksi=update-masyarakat" style="background: rgba(255, 255, 255, 0.95); padding: 2rem; border-radius: 16px;">
-                <input type="hidden" name="nik" value="<?= $data['nik'] ?>">
-
-                <div class="mb-3">
-                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">👤 Nama</label>
-                    <input type="text" name="nama" class="form-control" value="<?= $data['nama'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔤 email</label>
-                    <input type="text" name="email" class="form-control" value="<?= $data['email'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" style="color: var(--text-black); font-weight: 600;">🔐 Password</label>
-                    <input type="text" name="password" class="form-control" value="<?= $data['password'] ?>" required style="border: 2px solid rgba(10, 36, 114, 0.2); border-radius: 12px; padding: 0.875rem;">
-                </div>
-                
-                <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
-                    <a href="lihat_masyarakat.php" class="btn-secondary-custom" style="background: rgba(107, 114, 128, 0.8); border: none; border-radius: 12px; padding: 1rem 2rem; color: var(--text-white); font-weight: 600; text-decoration: none;">
-                        <i class='bx bx-x'></i> Batal
-                    </a>
-                    <button type="submit" class="btn-primary-custom">
-                        <i class='bx bx-save'></i> Simpan
-                    </button>
-                </div>
-            </form>
-        </div>
-    </main>
-
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('active');
-            });
-        }
-    </script>
-
-
-<?php
-    break;
-
     default:
-?> 
+?>
 
 <body>
     <!-- Advanced Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <a href="admin.php" class="logo">
+            <a href="petugas.php" class="logo">
                 <div class="logo-icon">
                     <i class='bx bx-layer'></i>
                 </div>
@@ -732,13 +597,13 @@ switch ($aksi) {
         
         <nav class="nav-menu">
             <div class="nav-item">
-                <a href="admin.php" class="nav-link active">
+                <a href="petugas.php" class="nav-link">
                     <i class='bx bx-grid-alt nav-icon'></i>
                     <span>Dashboard</span>
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_pengaduan.php?aksi=lihat-pengaduan" class="nav-link">
+                <a href="lihat_pengaduan.php" class="nav-link">
                     <i class='bx bx-message-square-detail nav-icon'></i>
                     <span>Lihat Pengaduan</span>
                 </a>
@@ -750,21 +615,9 @@ switch ($aksi) {
                 </a>
             </div>
             <div class="nav-item">
-                <a href="lihat_petugas.php?aksi=lihat-petugas" class="nav-link">
-                    <i class='bx bx-user nav-icon'></i>
-                    <span>Lihat Petugas</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="lihat_masyarakat.php?aksi=lihat-masyarakat" class="nav-link">
+                <a href="lihat_masyarakat.php" class="nav-link active">
                     <i class='bx bx-user nav-icon'></i>
                     <span>Lihat Masyarakat</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="lihat_report.php" class="nav-link">
-                    <i class='bx bx-file nav-icon'></i>
-                    <span>Laporan</span>
                 </a>
             </div>
             <div class="nav-item" style="margin-top: 2rem;">
@@ -782,7 +635,7 @@ switch ($aksi) {
             <button class="menu-toggle" id="menuToggle">
                 <i class='bx bx-menu'></i>
             </button>
-            <h1 class="header-title">Dashboard Admin</h1>
+            <h1 class="header-title">Data Masyarakat</h1>
         </div>
         
         <div class="header-right">
@@ -791,10 +644,10 @@ switch ($aksi) {
             </button>
             
             <div class="user-profile">
-                <img src="../../img/adminpetugas.png" alt="Profile" class="user-avatar">
+                <img src="../../img/adminpetugas.png " alt="Profile" class="user-avatar">
                 <div class="user-info">
-                    <h6>Admin</h6>
-                    <p>Administrator</p>
+                    <h6><?php echo isset($_SESSION['email']) ? $_SESSION['email'] : 'Petugas'; ?></h6>
+                    <p>Petugas</p>
                 </div>
             </div>
         </div>
@@ -804,44 +657,25 @@ switch ($aksi) {
     <main class="main-content">
         <!-- Hero Section -->
         <section class="hero-section fade-in-up">
-            <h1 class="hero-title">Selamat Datang di Dashboard Admin! 👋</h1>
-            <p class="hero-subtitle">Kelola sistem pengaduan masyarakat dengan mudah dan efisien. Monitor semua aktivitas dalam satu tempat.</p>
+            <h1 class="hero-title">👥 Data Masyarakat</h1>
+            <p class="hero-subtitle">Kelola data masyarakat yang terdaftar dalam sistem pengaduan dengan mudah dan efisien.</p>
         </section>
 
-        <!-- Stats Grid -->
-        <section class="stats-grid fade-in-up">
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class='bx bx-check-circle'></i>
-                </div>
-                <div class="stat-title">Pengaduan Diterima</div>
-                <div class="stat-value"><?= $accepted; ?></div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class='bx bx-time-five'></i>
-                </div>
-                <div class="stat-title">Pengaduan Menunggu</div>
-                <div class="stat-value"><?= $pending; ?></div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class='bx bx-x-circle'></i>
-                </div>
-                <div class="stat-title">Pengaduan Ditolak</div>
-                <div class="stat-value"><?= $decline; ?></div>
-            </div>
+        <!-- Action Button -->
+        <section class="content-card fade-in-up" style="padding: 1.5rem;">
+            <button type="button" class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <i class='bx bx-plus'></i>
+                Tambah Masyarakat
+            </button>
         </section>
 
-        <!-- Content Section -->
+        <!-- Table Section -->
         <section class="content-card fade-in-up">
             <h3 class="card-title">
                 <div class="card-icon">
-                    <i class='bx bx-message-square-detail'></i>
+                    <i class='bx bx-group'></i>
                 </div>
-                Data Pengaduan Masyarakat
+                Daftar Masyarakat Terdaftar
             </h3>
             
             <div class="table-responsive">
@@ -849,39 +683,36 @@ switch ($aksi) {
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Foto</th>
-                            <th>Tanggal Laporan</th>
                             <th>NIK</th>
-                            <th>Isi Laporan</th>
-                            <th>Status</th>
+                            <th>Nama</th>
+                            <th>email</th>
+                            <th>Password</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $query = mysqli_query($config, "SELECT * FROM pengaduan ORDER BY tgl_pengaduan DESC");
+                        $query = mysqli_query($config, "SELECT * FROM masyarakat");
                         $no = 1;
                         while ($row = mysqli_fetch_array($query)) {
                         ?>
                         <tr>
                             <td><?php echo $no++ ?></td>
-                            <td>
-                                <?php if($row['foto']): ?>
-                                    <img src="<?php echo $row['foto']; ?>" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-                                <?php else: ?>
-                                    <span style="color: #9ca3af; font-style: italic;">No Image</span>
-                                <?php endif; ?>
-                            </td>
-                            <td><?php echo date('d/m/Y', strtotime($row['tgl_pengaduan'])) ?></td>
                             <td><?php echo $row['nik'] ?></td>
-                            <td style="max-width: 300px;">
-                                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="<?php echo $row['isi_laporan'] ?>">
-                                    <?php echo substr($row['isi_laporan'], 0, 80) . (strlen($row['isi_laporan']) > 80 ? '...' : '') ?>
-                                </div>
-                            </td>
+                            <td><?php echo $row['nama'] ?></td>
+                            <td><?php echo $row['email'] ?></td>
+                            <td><?php echo $row['password'] ?></td>
                             <td>
-                                <span class="status-badge status-<?php echo strtolower(str_replace(' ', '-', $row['status'])); ?>">
-                                    <?php echo $row['status'] ?>
-                                </span>
+                                <div style="display: flex; gap: 0.5rem; flex-direction: column;">
+                                    <a href="petugas.php?aksi=edit-masyarakat&id=<?= $row['nik'] ?>" class="btn-success-custom" style="text-align: center;">
+                                        <i class='bx bx-edit'></i>
+                                        Edit
+                                    </a>
+                                    <a href="switch_petugas.php?aksi=hapus-masyarakat&nik=<?php echo $row['nik'] ?>" class="btn-secondary-custom" style="text-align: center;" onclick="return confirm('Yakin ingin menghapus data masyarakat ini?')">
+                                        <i class='bx bx-trash'></i>
+                                        Hapus
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                         <?php } ?>
@@ -890,6 +721,61 @@ switch ($aksi) {
             </div>
         </section>
     </main>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                        <i class='bx bx-user-plus'></i>
+                        Tambah Masyarakat
+                    </h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <form action="switch_petugas.php?aksi=tambah-masyarakat" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nik" class="form-label">🆔 NIK</label>
+                            <input type="text" class="form-control" name="nik" placeholder="Masukkan NIK" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nama" class="form-label">👤 Nama Lengkap</label>
+                            <input type="text" class="form-control" name="nama" placeholder="Masukkan Nama Lengkap" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">🔤 email</label>
+                            <input type="text" class="form-control" name="email" placeholder="Masukkan email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">🔐 Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="Masukkan Password" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telp" class="form-label">📱 Telepon</label>
+                            <input type="number" class="form-control" name="telp" placeholder="Masukkan Nomor Telepon" required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                        <button type="button" class="btn-secondary-custom" data-bs-dismiss="modal">
+                            <i class='bx bx-x'></i>
+                            Batal
+                        </button>
+                        <button type="submit" name="submit" class="btn-success-custom">
+                            <i class='bx bx-save'></i>
+                            Simpan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Mobile menu toggle
@@ -902,8 +788,8 @@ switch ($aksi) {
             });
         }
     </script>
-    
-    <?php
+
+<?php
     break;
 }
 ?>

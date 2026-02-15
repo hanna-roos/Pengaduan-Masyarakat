@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Form Registrasi</title>
+    <title>Form Login</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -58,7 +58,7 @@
             z-index: 1;
         }
 
-        .registration-container {
+        .login-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -66,7 +66,7 @@
             padding: 2rem;
         }
 
-        .registration-card {
+        .login-card {
             background: rgba(248, 250, 252, 0.15);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -76,15 +76,14 @@
                 0 10px 10px -5px rgba(0, 0, 0, 0.04),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             width: 100%;
-            max-width: 420px;
-            max-width: 360px;
+            max-width: 380px;
             padding: 0;
             overflow: hidden;
             position: relative;
             animation: slideInUp 0.8s ease-out;
         }
 
-        .registration-card::before {
+        .login-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -93,7 +92,7 @@
             height: 4px;
         }
 
-        .registration-card::after {
+        .login-card::after {
             content: '';
             position: absolute;
             top: -50%;
@@ -124,22 +123,22 @@
         }
 
         .card-body {
-            padding: 2rem 1.75rem;
+            padding: 2.5rem 2rem;
             position: relative;
             z-index: 1;
         }
 
-        .registration-title {
+        .login-title {
             color: var(--title);
             font-weight: 700;
-            font-size: 1.6rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.75rem;
+            margin-bottom: 1.75rem;
             text-align: center;
             position: relative;
             text-shadow: 0 2px 4px rgba(0, 7, 45, 0.1);
         }
 
-        .registration-title::after {
+        .login-title::after {
             content: '';
             position: absolute;
             bottom: -10px;
@@ -164,15 +163,15 @@
         }
 
         .form-group {
-            margin-bottom: 0.85rem;
+            margin-bottom: 1.25rem;
             position: relative;
         }
 
         .form-group label {
             color: var(--text-black);
             font-weight: 500;
-            font-size: 0.85rem;
-            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
             display: block;
             position: relative;
         }
@@ -190,19 +189,19 @@
             opacity: 0.6;
         }
 
-        .form-control {
+        .form-control, .form-select {
             background: rgba(255, 255, 255, 0.9);
             border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px;
-            padding: 0.65rem 0.9rem;
-            font-size: 0.95rem;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
             font-weight: 400;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(10px);
             position: relative;
         }
 
-        .form-control:focus {
+        .form-control:focus, .form-select:focus {
             background: rgba(255, 255, 255, 0.95);
             border-color: var(--bg-sidebar);
             box-shadow: 0 0 0 3px rgba(10, 36, 114, 0.1);
@@ -230,26 +229,25 @@
             opacity: 0.8;
             transform: translateY(-50%) scale(1.1);
         }
-
-        .btn-register {
+        .btn-login {
             background: linear-gradient(135deg, var(--bg-sidebar) 0%, var(--bg-button) 100%);
             border: none;
             border-radius: 12px;
-            padding: 0.7rem 1.8rem;
+            padding: 0.75rem 2rem;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-white);
             width: 100%;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
-            margin-top: 0.6rem;
-            margin-bottom: 1rem;
+            margin-top: 0.75rem;
+            margin-bottom: 1.25rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .btn-register::before {
+        .btn-login::before {
             content: '';
             position: absolute;
             top: 0;
@@ -260,27 +258,27 @@
             transition: left 0.5s;
         }
 
-        .btn-register:hover {
+        .btn-login:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0, 28, 85, 0.3);
             color:white;
+            box-shadow: 0 10px 25px rgba(0, 28, 85, 0.3);
         }
 
-        .btn-register:hover::before {
+        .btn-login:hover::before {
             left: 100%;
         }
 
-        .btn-register:active {
+        .btn-login:active {
             transform: translateY(0);
         }
 
-        .signin-link {
+        .signup-link {
             text-align: center;
             color: var(--text-black);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
 
-        .signin-link a {
+        .signup-link a {
             color: var(--bg-sidebar);
             text-decoration: none;
             font-weight: 600;
@@ -288,7 +286,7 @@
             transition: all 0.3s ease;
         }
 
-        .signin-link a::after {
+        .signup-link a::after {
             content: '';
             position: absolute;
             bottom: -2px;
@@ -299,11 +297,11 @@
             transition: width 0.3s ease;
         }
 
-        .signin-link a:hover {
+        .signup-link a:hover {
             color: var(--bg-button);
         }
 
-        .signin-link a:hover::after {
+        .signup-link a:hover::after {
             width: 100%;
         }
 
@@ -343,7 +341,6 @@
             right: 20%;
             animation-delay: 3s;
         }
-
         @keyframes float {
             0%, 100% {
                 transform: translateY(0px) rotate(0deg);
@@ -355,30 +352,30 @@
 
         /* Responsive design */
         @media (max-width: 768px) {
-            .registration-container {
-                padding: 0.75rem;
+            .login-container {
+                padding: 1rem;
             }
             
             .card-body {
-                padding: 1.75rem 1.25rem;
+                padding: 2rem 1.25rem;
             }
             
-            .registration-title {
-                font-size: 1.4rem;
+            .login-title {
+                font-size: 1.5rem;
             }
         }
 
         @media (max-width: 480px) {
             .card-body {
-                padding: 1.5rem 1rem;
+                padding: 1.75rem 1rem;
             }
             
-            .registration-title {
-                font-size: 1.3rem;
+            .login-title {
+                font-size: 1.35rem;
             }
             
-            .registration-card {
-                max-width: 320px;
+            .login-card {
+                max-width: 340px;
             }
         }
     </style>
@@ -472,7 +469,6 @@
 </style>
 </head>
 <body>
-
     <!-- preloader -->
 <div id="preloader" class="fixed inset-0 z-[9999999999999999] bg-white flex items-center justify-center">
     <div class="flex flex-col items-center gap-6">
@@ -501,27 +497,29 @@
     <div class="floating-shape" style="width: 90px; height: 90px; background: linear-gradient(45deg, #3b82f6, var(--bg-button)); border-radius: 50%; opacity: 0.08;"></div>
 
     <div class="container-fluid">
-        <div class="registration-container">
-            <div class="registration-card">
+        <div class="login-container">
+            <div class="login-card">
                 <div class="card-body">
-                    <h3 class="registration-title">REGISTRASI</h3>
-                    <form action="cek_regis.php" method="post">
-                        <div class="form-group">
+                    <h3 class="login-title">LOGIN</h3>
+                    <form action="cek_login.php" method="post">
+                        <!-- NIK field (for masyarakat) -->
+                        <div class="form-group" id="nik-field">
                             <label for="nik">NIK:</label>
-                            <input type="text" class="form-control" name="nik" id="nik" placeholder="Isi NIK Anda" required>
+                            <input type="text" class="form-control" name="nik" id="nik" placeholder="Isi NIK Anda">
+                            <span class="input-icon mt-3">🆔</span>
+                        </div>
+
+                        <!-- ID Petugas field (for petugas/admin) -->
+                        <div class="form-group" id="id-petugas-field" style="display: none;">
+                            <label for="id_petugas">ID Petugas:</label>
+                            <input type="text" class="form-control" name="id_petugas" id="id_petugas" placeholder="Isi ID Petugas Anda">
                             <span class="input-icon mt-3">🆔</span>
                         </div>
 
                         <div class="form-group">
-                            <label for="nama">Nama Lengkap:</label>
-                            <input type="text" class="form-control" name="nama" id="nama" placeholder="Isi Nama Lengkap Anda" required>
-                            <span class="input-icon mt-3">👤</span>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">email:</label>
+                            <label for="email">Email:</label>
                             <input type="text" class="form-control" name="email" id="email" placeholder="Isi email Anda" required>
-                            <span class="input-icon mt-3">🔤</span>
+                            <span class="input-icon mt-3">👤</span>
                         </div>
 
                         <div class="form-group">
@@ -531,21 +529,51 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="telp">Telepon:</label>
-                            <input type="text" class="form-control" name="telp" id="telp" placeholder="Isi No. Telepon Anda" required>
-                            <!-- <span class="input-icon mt-3">📱</span> -->
+                            <label for="level">Anda adalah Seorang:</label>
+                            <select id="level" name="level" class="form-select" required>
+                                <option value="">Pilih</option>
+                                <option value="masyarakat">Masyarakat</option>
+                                <option value="petugas">Petugas</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                            <span class="input-icon mt-3">⚡</span>
                         </div>
 
-                        <input type="submit" name="submit" value="DAFTAR" class="btn btn-register">
+                        <input type="submit" name="submit" value="Login" class="btn btn-login">
                         
-                        <div class="signin-link">
-                            Sudah Memiliki Akun? <a href="login.php">Login Sekarang</a>
+                        <div class="signup-link">
+                            Tidak Memiliki Akun? <a href="regis.php">Daftar Sekarang</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+    const levelSelect = document.getElementById('level');
+    const nikField = document.getElementById('nik-field');
+    const idPetugasField = document.getElementById('id-petugas-field');
+
+    levelSelect.addEventListener('change', function() {
+        if (this.value === 'masyarakat') {
+            nikField.style.display = 'block';
+            idPetugasField.style.display = 'none';
+            document.getElementById('nik').required = true;
+            document.getElementById('id_petugas').required = false;
+        } else if (this.value === 'petugas' || this.value === 'admin') {
+            nikField.style.display = 'none';
+            idPetugasField.style.display = 'block';
+            document.getElementById('nik').required = false;
+            document.getElementById('id_petugas').required = true;
+        } else {
+            nikField.style.display = 'none';
+            idPetugasField.style.display = 'none';
+            document.getElementById('nik').required = false;
+            document.getElementById('id_petugas').required = false;
+        }
+    });
+</script>
+
 </body>
 <script src="load.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
